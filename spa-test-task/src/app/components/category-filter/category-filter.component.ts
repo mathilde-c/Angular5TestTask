@@ -192,11 +192,37 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     return attributeSubSet;
   }
 
-    private startSearch() {
-        this.filteringService.searchCompletedAudits(this.stopSearch)
-        .takeUntil(this.stopSearch)
-        .subscribe(
+  private startSearch() {
+      this.filteringService.searchCompletedAudits(this.stopSearch)
+      .takeUntil(this.stopSearch)
+      .subscribe(
 
-        );
+      );
+  }
+
+  public hasAttributeFilters(): boolean {
+    return (this.hashAttributeFilterComponents.size > 0);
+  }
+
+  public clearLastAttributeFilter(): void {
+    // get highest index
+    let beforeLastAttributeFilterIndex = (this.hashAttributeFilterComponents.size - 1) - 1;
+
+    if (beforeLastAttributeFilterIndex >= 0){
+      let category: Category = this.selectedCategory;
+      let selectAllAttributeValueId = null;
+      // retrive component, update selected attribute value
+      let comp = this.hashAttributeFilterComponents.get(beforeLastAttributeFilterIndex);
+      // this should trigger update via event emitter => if not trigger it manuall
+      comp.instance.selectedValueId = selectAllAttributeValueId;
+      // manual trigger: 
+        //this.setSelectedAttribute(comp.instance.selectedTypeId, category, selectAllAttributeValueId, beforeLastAttributeFilterIndex);
+    } else {
+      this.filteringService.setCategory(this.allCategoriesCat);
+      this.selectedCategory = this.allCategoriesCat;
+      this.clearAttributeFilterComponents();
     }
+    
+    // trigger search
+  }
 }

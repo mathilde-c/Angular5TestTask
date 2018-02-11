@@ -7,3 +7,6 @@
   </select>
 </div>
 <div appAttributesFilterContainer class="container"></div>
+<div *ngIf="hasAttributeFilters()">
+  <app-clear-filter (clearFiltersTriggered)="clearLastAttributeFilter()"></app-clear-filter>
+</div>

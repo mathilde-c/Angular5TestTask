@@ -28,19 +28,19 @@ export class AppComponent implements OnInit {
     this.attributeTypesList.push(at);
 
     let av: AttributeValue = new AttributeValue();
-    av.id = 0;
-    av.attributeId = undefined;
-    av.attributeName = "All";
+    av.Id = 0;
+    av.AttributeId = undefined;
+    av.AttributeName = "All";
     this.attributeValueList.push(av);
     av = new AttributeValue();
-    av.id = 1;
-    av.attributeId = 600;
-    av.attributeName = "av600";
+    av.Id = 1;
+    av.AttributeId = 600;
+    av.AttributeName = "av600";
     this.attributeValueList.push(av);
     av = new AttributeValue();
-    av.id = 2;
-    av.attributeId = 700;
-    av.attributeName = "av700";
+    av.Id = 2;
+    av.AttributeId = 700;
+    av.AttributeName = "av700";
     this.attributeValueList.push(av);
   }
 
@@ -56,19 +56,19 @@ export class AppComponent implements OnInit {
     if (!event.attributeId){
       this.attributeValueList = [];
       let av: AttributeValue = new AttributeValue();
-      av.id = 0;
-      av.attributeId = null;
-      av.attributeName = "All";
+      av.Id = 0;
+      av.AttributeId = null;
+      av.AttributeName = "All";
       this.attributeValueList.push(av);
       av = new AttributeValue();
-      av.id = 1;
-      av.attributeId = 600;
-      av.attributeName = "av600";
+      av.Id = 1;
+      av.AttributeId = 600;
+      av.AttributeName = "av600";
       this.attributeValueList.push(av);
       av = new AttributeValue();
-      av.id = 15;
-      av.attributeId = 700;
-      av.attributeName = "XXXX";
+      av.Id = 15;
+      av.AttributeId = 700;
+      av.AttributeName = "XXXX";
       this.attributeValueList.push(av);;
 
     }
