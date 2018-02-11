@@ -21,7 +21,13 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
 
   public categoryList: Array<Category> = [];
   private allCategoriesCat = new Category();
-  public selectedCategory: Category  = new Category();
+  public get selectedCategory() { return this.selectedCategoryValue; }
+  public set selectedCategory(val) { 
+    this.selectedCategoryValue = val;
+    this.filteringService.setCategory(val); 
+  }
+  
+  private selectedCategoryValue = new Category();
 
   private hashAttributeFilterComponents = new Map<number, ComponentRef<CategoryAttributeFilterComponent>>(); 
 
@@ -72,7 +78,6 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   public onCategoryChange(newCategory: Category): void {
     this.stopSearch.next(true);
 
-    this.filteringService.setCategory(newCategory);
     this.clearAttributeFilterComponents();
 
     if (newCategory
@@ -102,82 +107,111 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       {
         this.removeAttributeFilterComponent(i);
       }
-      // update the existing component
+
       if (attributeValueId != null){
         // trigger create of new component
-        this.createAttributeFilterComponent(attributeTypeId, this.hashAttributeFilterComponents.size, category);
+        this.createAttributeFilterComponent(null, this.hashAttributeFilterComponents.size, category);
       }
     } else {
       this.createAttributeFilterComponent(attributeTypeId, this.hashAttributeFilterComponents.size, category);
     }
+
+    this.updatefilteringServiceAttributeFilters();
   }
 
   private createAttributeFilterComponent(attributeTypeId: number, index: number, category: Category): ComponentRef<CategoryAttributeFilterComponent> {
+    let remainingAttributeTypeFilterUnused = this.getAttributeTypeList(category);
+
+    if (remainingAttributeTypeFilterUnused.length === 0) {
+      return;
+    }
+
+    if (attributeTypeId == null) {
+      attributeTypeId = remainingAttributeTypeFilterUnused[0].TypeId;
+    }
+
     let categoryAttributeFilterComponent  = this.componentFactoryResolver.resolveComponentFactory(CategoryAttributeFilterComponent);
     let compRef: ComponentRef<CategoryAttributeFilterComponent> = this.attributeContainer.viewContainerRef.createComponent(categoryAttributeFilterComponent);
     compRef.instance.defaultSelectedAttributeTypeId = attributeTypeId;
     compRef.instance.id = index;
     compRef.instance.onFiltersUpdated.subscribe(
-      selectedAttribute => {
+      (selectedAttribute: SelectedAttribute) => {
         console.log("selected attribute change!! : " + selectedAttribute);
-        this.setSelectedAttribute(selectedAttribute.attributeFilterId, null, selectedAttribute.attributeId, selectedAttribute.attributeFilterId);
+        this.setSelectedAttribute(selectedAttribute.typeId, null, selectedAttribute.attributeId, selectedAttribute.attributeFilterId);
 
         // trigger search
       }
     );
 
-    if (this.hashAttributeFilterComponents.size > 0){
-      compRef.instance.attributeTypesList = this.findAttributeFilterUsable(category);
-    } else {
-      compRef.instance.attributeTypesList = category.AttributeTypes;
-    }
+    compRef.instance.attributeTypesList = remainingAttributeTypeFilterUnused;
 
     compRef.instance.attributeValuesList = this.initializeDefaultAttributValues();
 
+    this.triggerNewAttributeFilterComponentInitialization(compRef);
     this.hashAttributeFilterComponents.set(index, compRef);
+
+    this.updatefilteringServiceAttributeFilters();
 
     return compRef;
   }
 
   private initializeDefaultAttributValues(): Array<AttributeValue> {
+    let attrValues: Array<AttributeValue> = [];
+
     let all: AttributeValue = new AttributeValue();
 
     all.AttributeId = null;
     all.AttributeName = "All";
-    all.Id = null;
+    all.Id = -1;
+    attrValues.push(all);
 
-    let attrValues: Array<AttributeValue> = [];
+    all = new AttributeValue();
+    
+        all.AttributeId = 3;
+        all.AttributeName = "tmp test";
+        all.Id = 1;
+
     attrValues.push(all);
     
     return attrValues;
   }
 
   private removeAttributeFilterComponent(key: number):void {
-      this.attributeContainer.viewContainerRef.remove(key);
+    this.attributeContainer.viewContainerRef.remove(key);
 
-      this.hashAttributeFilterComponents.delete(key);
+    this.hashAttributeFilterComponents.delete(key);
+
+      this.updatefilteringServiceAttributeFilters();
   }
 
   private findAttributeFilterUsable(category: Category): Array<AttributeType>{
     let typeIdsInUse: Array<number> = []; 
-    let highestDisplay: number = 500000;
+    let highestDisplay: number = -1;
     let zeroDisplayInUse: boolean = false;
 
     this.hashAttributeFilterComponents.forEach(comp => {
       typeIdsInUse.push(comp.instance.selectedTypeId);
     });
+
+    if (typeIdsInUse.length === category.AttributeTypes.length) {
+      return [];
+    }
+
     for (let id of typeIdsInUse){
       let display: number = category.AttributeTypes.find(att => att.TypeId == id).DisplayOrder;
       zeroDisplayInUse = zeroDisplayInUse || (display === 0);
-      if (display !== 0 
-          && display < highestDisplay){
+      if (display > highestDisplay){
         highestDisplay = display;
       }
     }
 
+    if (zeroDisplayInUse) {
+      return [];
+    }
+
     let attributeSubSet: Array<AttributeType> = [];
     if (!zeroDisplayInUse){
-      let attr0: AttributeType = category.AttributeTypes.find(att => att.DisplayOrder == 0);
+      let attr0: AttributeType = category.AttributeTypes.find(att => att.DisplayOrder === 0);
       if (attr0){
         attributeSubSet.push(attr0);
       }
@@ -205,24 +239,38 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   }
 
   public clearLastAttributeFilter(): void {
-    // get highest index
     let beforeLastAttributeFilterIndex = (this.hashAttributeFilterComponents.size - 1) - 1;
 
     if (beforeLastAttributeFilterIndex >= 0){
-      let category: Category = this.selectedCategory;
-      let selectAllAttributeValueId = null;
-      // retrive component, update selected attribute value
       let comp = this.hashAttributeFilterComponents.get(beforeLastAttributeFilterIndex);
-      // this should trigger update via event emitter => if not trigger it manuall
-      comp.instance.selectedValueId = selectAllAttributeValueId;
-      // manual trigger: 
-        //this.setSelectedAttribute(comp.instance.selectedTypeId, category, selectAllAttributeValueId, beforeLastAttributeFilterIndex);
+
+      comp.instance.selectedValueId = null;
     } else {
-      this.filteringService.setCategory(this.allCategoriesCat);
       this.selectedCategory = this.allCategoriesCat;
       this.clearAttributeFilterComponents();
     }
     
     // trigger search
   }
+
+    private updatefilteringServiceAttributeFilters() {
+        let attrFilters: Array<SelectedAttribute> =[];
+        this.hashAttributeFilterComponents.forEach((comp, key) => {
+          let selectedAttribute: SelectedAttribute = new SelectedAttribute(key, comp.instance.selectedTypeId, comp.instance.selectedValueId);
+          attrFilters.push(selectedAttribute);
+        });
+
+        this.filteringService.setAttributesFilters(attrFilters);
+    }
+
+    private triggerNewAttributeFilterComponentInitialization(compRef: ComponentRef<CategoryAttributeFilterComponent>) {
+        compRef.instance.ngOnInit();
+    }
+
+    private getAttributeTypeList(category: Category): Array<AttributeType> {
+        return this.hashAttributeFilterComponents.size > 0
+                ? this.findAttributeFilterUsable(category)
+                : category.AttributeTypes;
+        }
+    }
 }

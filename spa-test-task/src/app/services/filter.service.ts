@@ -51,6 +51,7 @@ export class FilterService {
         this.fromDate = from;
         this.toDate = to;
     }
+    
 
     // public clearAllAttributes(){
     //     this.selectedAttributes = [];
