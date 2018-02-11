@@ -18,6 +18,7 @@ select {
     background-color: transparent;
     border-radius: 3px;
     margin: 0.2em 0;
+    margin-bottom: 1.25em;
 }
 
 .dropdwon-label {
