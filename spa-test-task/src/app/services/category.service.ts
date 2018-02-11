@@ -38,7 +38,7 @@ export class CategoryService {
       dummy = new Category();
       dummy.name = "dummy2";
       dummy.categoryId = 2;
-      dummy.defaultTypeId = 2;
+      dummy.defaultTypeId = 1;
       dummy.attributeTypes = attributeTypesList;
       dummyCats.push(dummy)
 

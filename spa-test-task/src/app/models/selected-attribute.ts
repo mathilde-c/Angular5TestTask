@@ -1,6 +1,6 @@
 export class SelectedAttribute {
     
 
-    constructor(public typeId: number, public attributeId: number) {
+    constructor(public attributeFilterId: number, public typeId: number, public attributeId: number) {
     }
 }

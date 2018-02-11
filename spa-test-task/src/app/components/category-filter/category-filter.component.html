@@ -1,4 +1,3 @@
-
 <div class="container">
   <label for="categories">
     Category:
@@ -7,12 +6,4 @@
       <option *ngFor="let category of categoryList" [ngValue]="category" [selected]="selectedCategory.categoryId == category.categoryId">{{category.name}}</option>
   </select>
 </div>
-<!-- <ng-container *ngIf=selectedCategory.categoryId> -->
-  <div appAttributesFilterContainer class="container">
-      <!-- <app-category-attribute-filter 
-        [attributeTypesList]="selectedCategory.attributeTypes" 
-        [attributeValuesList]="attributeValueList" 
-        [defaultSelectedAttributeTypeId]="selectedCategory.defaultTypeId">
-      </app-category-attribute-filter> -->
-  </div>
-<!-- </ng-container> -->
+<div appAttributesFilterContainer class="container"></div>

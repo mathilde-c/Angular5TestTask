@@ -54,22 +54,22 @@ export class AppComponent implements OnInit {
 
   public onUpdateSub(event: SelectedAttribute){
     if (!event.attributeId){
-    this.attributeValueList = [];
-    let av: AttributeValue = new AttributeValue();
-    av.id = 0;
-    av.attributeId = null;
-    av.attributeName = "All";
-    this.attributeValueList.push(av);
-    av = new AttributeValue();
-    av.id = 1;
-    av.attributeId = 600;
-    av.attributeName = "av600";
-    this.attributeValueList.push(av);
-    av = new AttributeValue();
-    av.id = 15;
-    av.attributeId = 700;
-    av.attributeName = "XXXX";
-    this.attributeValueList.push(av);;
+      this.attributeValueList = [];
+      let av: AttributeValue = new AttributeValue();
+      av.id = 0;
+      av.attributeId = null;
+      av.attributeName = "All";
+      this.attributeValueList.push(av);
+      av = new AttributeValue();
+      av.id = 1;
+      av.attributeId = 600;
+      av.attributeName = "av600";
+      this.attributeValueList.push(av);
+      av = new AttributeValue();
+      av.id = 15;
+      av.attributeId = 700;
+      av.attributeName = "XXXX";
+      this.attributeValueList.push(av);;
 
     }
   }

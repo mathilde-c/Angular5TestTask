@@ -16,6 +16,8 @@ export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
 
   @Output() onFiltersUpdated: EventEmitter<SelectedAttribute> = new EventEmitter<SelectedAttribute>();
 
+  public id: number = null;
+
   public get selectedTypeId(): number { return this.selectedTypeIdValue; }
   public get selectedValueId(): number { return this.selectedValueIdValue; }
   
@@ -43,7 +45,7 @@ export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
   }
 
   private EmitSelectAttributes(): void {
-    let selectedOptions = new SelectedAttribute(this.selectedTypeIdValue, this.selectedValueIdValue);
+    let selectedOptions = new SelectedAttribute(this.id, this.selectedTypeId, this.selectedValueIdValue);
 
     this.onFiltersUpdated.emit(selectedOptions);
   }

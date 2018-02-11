@@ -12,7 +12,7 @@ import { CompletedAuditSearchResult } from '../models/completed-audit-search-res
 export class FilterService {
 
     private currentCategoryId: number = null;
-    private selectedAttributes: Array<SelectedAttribute> = [];
+    // private selectedAttributes: Array<SelectedAttribute> = [];
 
     constructor(private http: HttpClient,
     private userService: UserService) { }
@@ -41,34 +41,46 @@ export class FilterService {
         this.currentCategoryId = newCategory.categoryId;
     }
 
-    public clearAllAttributes(){
-        this.selectedAttributes = [];
-    }
+    // public clearAllAttributes(){
+    //     this.selectedAttributes = [];
+    // }
 
-    public setSelectedAttribute(attributeTypeId: number, attributeValueId: number){
-        let existingIndex = this.retriveExistingAttributeFilterIndex(attributeTypeId);
+    // public setSelectedAttribute(attributeTypeId: number, attributeValueId: number): number{
+    //     let index = this.retriveExistingAttributeFilterIndex(attributeTypeId);
         
-        if (existingIndex > -1){
-            this.selectedAttributes[existingIndex].attributeId = attributeValueId;
-        } else {
-            this.selectedAttributes.push(new SelectedAttribute(attributeTypeId, attributeValueId));
-        }
-    }
+    //     if (index > -1){
+    //         this.selectedAttributes[index].attributeId = attributeValueId;
+    //     } else {
+    //         index = this.selectedAttributes.length; 
+    //         this.selectedAttributes.push(new SelectedAttribute(index, attributeTypeId, attributeValueId));
+    //     }
 
-    public retriveExistingAttributeFilterIndex(attributeTypeId: number): number {
-        return this.selectedAttributes.findIndex(a => a.attributeId === attributeTypeId);
-    }
+    //     return index;
+    // }
 
-    public removeLastAttributeFilter(): void{
-        if (this.selectedAttributes.length > 1){
-            this.selectedAttributes.pop();
-        }
-    }
+    // public retriveExistingAttributeFilterIndex(attributeTypeId: number): number {
+    //     return this.selectedAttributes.findIndex(a => a.attributeId === attributeTypeId);
+    // }
 
-    public removeAllAttributeFilterFromIndex(startIndex: number): void{
-        while(this.selectedAttributes.length > startIndex)
-        {
-            this.selectedAttributes.pop();
-        }
-    }
+    // public removeLastAttributeFilter(): void{
+    //     if (this.selectedAttributes.length > 1){
+    //         this.selectedAttributes.pop();
+    //     }
+    // }
+
+    // public removeAllAttributeFilterFromIndex(startIndex: number): void{
+    //     while(this.selectedAttributes.length > startIndex)
+    //     {
+    //         this.selectedAttributes.pop();
+    //     }
+    // }
+
+    // public getInUseAttributeTypeIds(): Array<number> {
+    //     let inUse: Array<number> = [];
+    //     for(let attribute of this.selectedAttributes){
+    //         inUse.push(attribute.attributeFilterId)
+    //     }
+
+    //     return inUse;
+    // }
 }
