@@ -25,12 +25,13 @@ export class DatesFilterComponent implements OnInit {
     }
   }
 
-  public fromDateValue: Date;
+  private fromDateValue: Date;
   private toDateValue: Date;
 
   constructor() { }
 
   ngOnInit() {
+
     this.fromDateValue = this.computerStartDate(new Date(Date.now()));
     this.toDateValue =  this.computerEndDate(this.fromDateValue);
   }
