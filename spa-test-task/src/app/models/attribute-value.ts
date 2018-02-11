@@ -1,5 +1,5 @@
 export class AttributeValue {
-    id: number;
-    attributeId: number;
-    attributeName: string;
+    Id: number;
+    AttributeId: number;
+    AttributeName: string;
 }

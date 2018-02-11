@@ -142,9 +142,9 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   private initializeDefaultAttributValues(): Array<AttributeValue> {
     let all: AttributeValue = new AttributeValue();
 
-    all.attributeId = null;
-    all.attributeName = "All";
-    all.id = null;
+    all.AttributeId = null;
+    all.AttributeName = "All";
+    all.Id = null;
 
     let attrValues: Array<AttributeValue> = [];
     attrValues.push(all);
@@ -167,7 +167,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       typeIdsInUse.push(comp.instance.selectedTypeId);
     });
     for (let id of typeIdsInUse){
-      let display: number = category.AttributeTypes.find(att => att.typeId == id).displayOrder;
+      let display: number = category.AttributeTypes.find(att => att.TypeId == id).DisplayOrder;
       zeroDisplayInUse = zeroDisplayInUse || (display === 0);
       if (display !== 0 
           && display < highestDisplay){
@@ -177,14 +177,14 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
 
     let attributeSubSet: Array<AttributeType> = [];
     if (!zeroDisplayInUse){
-      let attr0: AttributeType = category.AttributeTypes.find(att => att.displayOrder == 0);
+      let attr0: AttributeType = category.AttributeTypes.find(att => att.DisplayOrder == 0);
       if (attr0){
         attributeSubSet.push(attr0);
       }
     }
 
     for(let attr of category.AttributeTypes){
-      if (attr.displayOrder > highestDisplay){
+      if (attr.DisplayOrder > highestDisplay){
         attributeSubSet.push(attr);
       }
     }

@@ -1,6 +1,6 @@
 export class CompletedAuditSearchResult {
-    categoryId: number;
-    categoryName: string;
-    failedAuditCount: number;
-    completedAuditCount: number;
+    CategoryId: number;
+    CategoryName: string;
+    FailedAuditCount: number;
+    CompletedAuditCount: number;
 }

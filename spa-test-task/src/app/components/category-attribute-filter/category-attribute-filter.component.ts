@@ -36,8 +36,8 @@ export class CategoryAttributeFilterComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.selectedTypeIdValue = this.defaultSelectedAttributeTypeId ? this.defaultSelectedAttributeTypeId : this.attributeTypesList[0].typeId;
-    this.selectedValueIdValue = (this.attributeValuesList && this.attributeValuesList.length > 0) ? this.attributeValuesList[0].attributeId : null;
+    this.selectedTypeIdValue = this.defaultSelectedAttributeTypeId ? this.defaultSelectedAttributeTypeId : this.attributeTypesList[0].TypeId;
+    this.selectedValueIdValue = (this.attributeValuesList && this.attributeValuesList.length > 0) ? this.attributeValuesList[0].AttributeId : null;
   }
 
   private EmitSelectAttributes(): void {

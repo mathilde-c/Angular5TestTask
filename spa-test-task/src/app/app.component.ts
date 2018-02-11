@@ -17,14 +17,14 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     let at: AttributeType = new AttributeType();
-    at.typeId = 1;
-    at.displayOrder = 0;
-    at.name = "at1";
+    at.TypeId = 1;
+    at.DisplayOrder = 0;
+    at.Name = "at1";
     this.attributeTypesList.push(at);
     at = new AttributeType();
-    at.typeId = 2;
-    at.displayOrder = 1;
-    at.name = "at2";
+    at.TypeId = 2;
+    at.DisplayOrder = 1;
+    at.Name = "at2";
     this.attributeTypesList.push(at);
 
     let av: AttributeValue = new AttributeValue();
