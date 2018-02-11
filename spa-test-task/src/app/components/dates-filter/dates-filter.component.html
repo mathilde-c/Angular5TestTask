@@ -5,7 +5,7 @@
   </label>
   <div class="picker" name="picker-from">
     <mat-form-field>
-      <input matInput [matDatepicker]="pickerFrom" disabled [(ngModel)]="from">
+      <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="from">
       <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
       <mat-datepicker #pickerFrom disabled="false"></mat-datepicker>
     </mat-form-field>
@@ -17,7 +17,7 @@
   </label>
   <div  class="picker" name="picker-to">
     <mat-form-field>
-      <input matInput [matDatepicker]="pickerTo" disabled [(ngModel)]="to">
+      <input matInput [matDatepicker]="pickerTo" [(ngModel)]="to">
       <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
       <mat-datepicker #pickerTo disabled="false"></mat-datepicker>
     </mat-form-field>

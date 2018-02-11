@@ -1,4 +1,6 @@
 export class SelectedAttribute {
-    typeId: number;
-    attributeId: number;
+    
+
+    constructor(public typeId: number, public attributeId: number) {
+    }
 }

@@ -11,4 +11,10 @@
 
   <app-clear-filter (clearFiltersTriggered)="onFiltersClear()"></app-clear-filter>
 
+  <app-category-attribute-filter 
+  [attributeTypesList]="attributeTypesList" 
+  [attributeValuesList]="attributeValueList" 
+  (onFiltersUpdated)="onUpdateSub()">
+</app-category-attribute-filter>
+
 </div>

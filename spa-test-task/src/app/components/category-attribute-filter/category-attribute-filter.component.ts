@@ -10,35 +10,39 @@ import { SelectedAttribute } from '../../models/selected-attribute';
   styleUrls: ['./category-attribute-filter.component.css']
 })
 export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
-  @Input() attributeTypesList: Array<AttributeType> = [];
+  @Input() attributeTypesList: Array<AttributeType>;
+  @Input() attributeValuesList: Array<AttributeValue>;
+
   @Output() onFiltersUpdated: EventEmitter<SelectedAttribute> = new EventEmitter<SelectedAttribute>();
 
-  public attributeValuesList: Array<AttributeValue> = [];
+  public get selectedTypeId(): number { return this.selectedTypeIdValue; }
+  public get selectedValueId(): number { return this.selectedValueIdValue; }
+  
+  public set selectedTypeId (val) { 
+    this.selectedTypeIdValue = val;
+    this.EmitSelectAttributes();
+  }
+  public set selectedValueId (val) {
+    this.selectedTypeIdValue = val;
+    this.EmitSelectAttributes();
+  }
+  private selectedTypeIdValue: number;
+  private selectedValueIdValue: number;
 
   constructor() { }
 
   ngOnInit() {
+    this.selectedTypeIdValue = this.attributeTypesList[0].typeId;
+    this.selectedValueIdValue = this.attributeValuesList[0].attributeId;
   }
 
   ngOnDestroy(): void {
       this.onFiltersUpdated.emit(null);
   }
 
-  public onAttributeTypeSelected(): void {
-    this.updateAttributeValueList();
+  private EmitSelectAttributes() {
+    let selectedOptions = new SelectedAttribute(this.selectedTypeIdValue, this.selectedValueIdValue);
 
-      this.EmitSelectAttributes();
+    this.onFiltersUpdated.emit(selectedOptions);
   }
-
-  private updateAttributeValueList(): void {
-    // set default 
-  }
-
-    private EmitSelectAttributes() {
-      // get selected value for type
-      // get selected value for list
-      // create new SelectedAttribute
-      
-        this.onFiltersUpdated.emit();
-    }
 }
