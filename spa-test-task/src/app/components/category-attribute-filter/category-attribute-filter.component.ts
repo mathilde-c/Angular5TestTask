@@ -40,7 +40,7 @@ export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
       this.onFiltersUpdated.emit(null);
   }
 
-  private EmitSelectAttributes() {
+  private EmitSelectAttributes(): void {
     let selectedOptions = new SelectedAttribute(this.selectedTypeIdValue, this.selectedValueIdValue);
 
     this.onFiltersUpdated.emit(selectedOptions);

@@ -6,6 +6,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule, MatInputModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
@@ -13,6 +14,9 @@ import { DatesFilterComponent } from './components/dates-filter/dates-filter.com
 import { ClearFilterComponent } from './components/clear-filter/clear-filter.component';
 import { CategoryAttributeFilterComponent } from './components/category-attribute-filter/category-attribute-filter.component';
 import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
+import { UserService } from './services/user.service';
+import { CategoryService } from './services/category.service';
+import { FilterService } from './services/filter.service';
 
 
 @NgModule({
@@ -31,12 +35,16 @@ import { CategoryFilterComponent } from './components/category-filter/category-f
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+    UserService,
+    CategoryService,
+    FilterService
   ],
 
   bootstrap: [AppComponent]

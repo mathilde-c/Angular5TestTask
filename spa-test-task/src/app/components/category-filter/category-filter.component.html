@@ -3,7 +3,7 @@
   <label for="categories">
     Category:
   </label>
-  <select [(ngModel)]="selectedValueId">
-      <option *ngFor="let value of attributeValuesList" [ngValue]="value.attributeId">{{value.attributeName}}</option>
+  <select [(ngModel)]="selectedCategoryId">
+      <option *ngFor="let category of categoryList" [ngValue]="category.categoryId">{{category.name}}</option>
   </select>
 </div>
