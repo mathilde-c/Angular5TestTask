@@ -12,7 +12,9 @@ import { CompletedAuditSearchResult } from '../models/completed-audit-search-res
 export class FilterService {
 
     private currentCategoryId: number = null;
-    // private selectedAttributes: Array<SelectedAttribute> = [];
+    private selectedAttributes: Array<SelectedAttribute> = [];
+    private fromDate: Date;
+    private toDate: Date;
 
     constructor(private http: HttpClient,
     private userService: UserService) { }
@@ -23,15 +25,15 @@ export class FilterService {
         let dummyResults: Array<CompletedAuditSearchResult> = [];
   
         let dummy: CompletedAuditSearchResult = new CompletedAuditSearchResult();
-        dummy.categoryName = "dummyResult";
-        dummy.categoryId = 1;
-        dummy.completedAuditCount = 2;
-        dummy.failedAuditCount = 0;
+        dummy.CategoryName = "dummyResult";
+        dummy.CategoryId = 1;
+        dummy.CompletedAuditCount = 2;
+        dummy.FailedAuditCount = 0;
         dummyResults.push(dummy)
-        dummy.categoryName = "dummyResult2";
-        dummy.categoryId = 2;
-        dummy.completedAuditCount = 5;
-        dummy.failedAuditCount = 7;
+        dummy.CategoryName = "dummyResult2";
+        dummy.CategoryId = 2;
+        dummy.CompletedAuditCount = 5;
+        dummy.FailedAuditCount = 7;
         dummyResults.push(dummy)
   
         return Observable.of(dummyResults);
@@ -39,6 +41,15 @@ export class FilterService {
 
     public setCategory(newCategory: Category): void {
         this.currentCategoryId = newCategory.CategoryId;
+    }
+
+    public setAttributesFilters (filters: Array<SelectedAttribute>): void {
+        this.selectedAttributes = filters;
+    }
+
+    public setDates(from: Date, to: Date): void {
+        this.fromDate = from;
+        this.toDate = to;
     }
 
     // public clearAllAttributes(){
