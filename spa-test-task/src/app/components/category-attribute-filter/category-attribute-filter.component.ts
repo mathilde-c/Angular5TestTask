@@ -20,10 +20,11 @@ export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
   
   public set selectedTypeId (val) { 
     this.selectedTypeIdValue = val;
+    this.selectedValueIdValue = null;
     this.EmitSelectAttributes();
   }
   public set selectedValueId (val) {
-    this.selectedTypeIdValue = val;
+    this.selectedValueIdValue = val;
     this.EmitSelectAttributes();
   }
   private selectedTypeIdValue: number;

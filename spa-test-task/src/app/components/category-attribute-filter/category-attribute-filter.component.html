@@ -1,6 +1,6 @@
-<select [(ngModel)]="selectedTypeId">
+<select class="dropdown" [(ngModel)]="selectedTypeId">
   <option *ngFor="let type of attributeTypesList" [ngValue]="type.typeId" [selected]="type.typeId === selectedTypeId">{{type.name}}</option>
 </select><!--  remove space
---><select [(ngModel)]="selectedValueId">
+--><select class="dropdown" [(ngModel)]="selectedValueId">
   <option *ngFor="let value of attributeValuesList" [ngValue]="value.attributeId">{{value.attributeName}}</option>
 </select>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatesFilter } from './models/dates-filter';
 import { AttributeType } from './models/attribute-type';
 import { AttributeValue } from './models/attribute-value';
+import { SelectedAttribute } from './models/selected-attribute';
 
 @Component({
   selector: 'app-root',
@@ -51,11 +52,12 @@ export class AppComponent implements OnInit {
     console.log("clear filter triggered");
   }
 
-  public onUpdateSub(){
+  public onUpdateSub(event: SelectedAttribute){
+    if (!event.attributeId){
     this.attributeValueList = [];
     let av: AttributeValue = new AttributeValue();
     av.id = 0;
-    av.attributeId = undefined;
+    av.attributeId = null;
     av.attributeName = "All";
     this.attributeValueList.push(av);
     av = new AttributeValue();
@@ -68,5 +70,7 @@ export class AppComponent implements OnInit {
     av.attributeId = 4258;
     av.attributeName = "XXXX";
     this.attributeValueList.push(av);;
+
+    }
   }
 }
