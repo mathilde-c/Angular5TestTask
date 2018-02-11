@@ -3,7 +3,7 @@
     Category:
   </label>
   <select  class="category-dropdown" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)">
-      <option *ngFor="let category of categoryList" [ngValue]="category" [selected]="selectedCategory.categoryId == category.categoryId">{{category.name}}</option>
+      <option *ngFor="let category of categoryList" [ngValue]="category" [selected]="selectedCategory.CategoryId == category.CategoryId">{{category.Name}}</option>
   </select>
 </div>
 <div appAttributesFilterContainer class="container"></div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -38,7 +38,7 @@ export class FilterService {
     }
 
     public setCategory(newCategory: Category): void {
-        this.currentCategoryId = newCategory.categoryId;
+        this.currentCategoryId = newCategory.CategoryId;
     }
 
     // public clearAllAttributes(){

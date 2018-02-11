@@ -9,7 +9,7 @@ import { SelectedAttribute } from '../../models/selected-attribute';
   templateUrl: './category-attribute-filter.component.html',
   styleUrls: ['./category-attribute-filter.component.css']
 })
-export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
+export class CategoryAttributeFilterComponent implements OnInit {
   @Input() attributeTypesList: Array<AttributeType>;
   @Input() attributeValuesList: Array<AttributeValue>;
   @Input() defaultSelectedAttributeTypeId: number; 
@@ -38,10 +38,6 @@ export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.selectedTypeIdValue = this.defaultSelectedAttributeTypeId ? this.defaultSelectedAttributeTypeId : this.attributeTypesList[0].typeId;
     this.selectedValueIdValue = (this.attributeValuesList && this.attributeValuesList.length > 0) ? this.attributeValuesList[0].attributeId : null;
-  }
-
-  ngOnDestroy(): void {
-      this.onFiltersUpdated.emit(null);
   }
 
   private EmitSelectAttributes(): void {

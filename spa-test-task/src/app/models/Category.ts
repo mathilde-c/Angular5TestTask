@@ -1,9 +1,9 @@
 import { AttributeType } from "./attribute-type";
 
 export class Category {
-    categoryId: number;
-    name: string;
-    demeritStartingScore: number;
-    defaultTypeId: number;
-    attributeTypes: Array<AttributeType>;
+    CategoryId: number;
+    Name: string;
+    DemeritStartingScore: number;
+    DefaultTypeId: number;
+    AttributeTypes: Array<AttributeType>;
 }

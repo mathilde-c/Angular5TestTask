@@ -9,6 +9,7 @@ import { SelectedAttribute } from '../../models/selected-attribute';
 import { Category } from '../../models/category';
 import { CategoryAttributeFilterComponent } from '../category-attribute-filter/category-attribute-filter.component';
 import { AttributeType } from '../../models/attribute-type';
+import { AttributeValue } from '../../models/attribute-value';
 
 @Component({
   selector: 'app-category-filter',
@@ -53,18 +54,19 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     this.categoryService.getCategories()
       .takeUntil(this.unsuscribeAll)
       .subscribe(
-        resultArray => {
-          this.categoryList = this.categoryList.concat(resultArray);
+        (resultArray: Array<Category>) => {
+          let v:Category[] = resultArray.map(c => { let cat: Category = c; return cat; });
+          this.categoryList = this.categoryList.concat(v);
         },
         error => console.log("Error :: " + error)
       );
   }
 
   private initializeAllCategoriesCat() {
-      this.allCategoriesCat.attributeTypes = [];
-      this.allCategoriesCat.categoryId = null;
-      this.allCategoriesCat.defaultTypeId = null;
-      this.allCategoriesCat.name = "All categories";
+      this.allCategoriesCat.AttributeTypes = [];
+      this.allCategoriesCat.CategoryId = null;
+      this.allCategoriesCat.DefaultTypeId = null;
+      this.allCategoriesCat.Name = "All categories";
   }
 
   public onCategoryChange(newCategory: Category): void {
@@ -74,18 +76,14 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     this.clearAttributeFilterComponents();
 
     if (newCategory
-        && newCategory.categoryId){
-      this.setSelectedAttribute(newCategory.defaultTypeId, newCategory, null);
+        && newCategory.CategoryId){
+      this.setSelectedAttribute(newCategory.DefaultTypeId, newCategory, null);
     } 
 
-    this.filteringService.searchCompletedAudits(this.stopSearch)
-      .takeUntil(this.stopSearch)
-      .subscribe();
+      this.startSearch();
   }
 
   private clearAttributeFilterComponents(): void {
-    // this.filteringService.clearAllAttributes();
-
     let numberOfComponent:number = this.hashAttributeFilterComponents.size;
     for (let i:number = 0; i < numberOfComponent; i++){
       this.removeAttributeFilterComponent(i);
@@ -99,14 +97,16 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       category = this.selectedCategory;
     }
 
-    // let index: number = this.filteringService.setSelectedAttribute(category.defaultTypeId, attributeValueId);
-
     if (idOfAttributeComponent != null){
       for(let i:number = this.hashAttributeFilterComponents.size - 1; i > idOfAttributeComponent; i--)
       {
         this.removeAttributeFilterComponent(i);
       }
       // update the existing component
+      if (attributeValueId != null){
+        // trigger create of new component
+        this.createAttributeFilterComponent(attributeTypeId, this.hashAttributeFilterComponents.size, category);
+      }
     } else {
       this.createAttributeFilterComponent(attributeTypeId, this.hashAttributeFilterComponents.size, category);
     }
@@ -116,35 +116,49 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     let categoryAttributeFilterComponent  = this.componentFactoryResolver.resolveComponentFactory(CategoryAttributeFilterComponent);
     let compRef: ComponentRef<CategoryAttributeFilterComponent> = this.attributeContainer.viewContainerRef.createComponent(categoryAttributeFilterComponent);
     compRef.instance.defaultSelectedAttributeTypeId = attributeTypeId;
-    compRef.instance.defaultSelectedAttributeTypeId = attributeTypeId;
     compRef.instance.id = index;
     compRef.instance.onFiltersUpdated.subscribe(
       selectedAttribute => {
         console.log("selected attribute change!! : " + selectedAttribute);
         this.setSelectedAttribute(selectedAttribute.attributeFilterId, null, selectedAttribute.attributeId, selectedAttribute.attributeFilterId);
+
+        // trigger search
       }
     );
 
     if (this.hashAttributeFilterComponents.size > 0){
       compRef.instance.attributeTypesList = this.findAttributeFilterUsable(category);
     } else {
-      compRef.instance.attributeTypesList = category.attributeTypes;
+      compRef.instance.attributeTypesList = category.AttributeTypes;
     }
+
+    compRef.instance.attributeValuesList = this.initializeDefaultAttributValues();
 
     this.hashAttributeFilterComponents.set(index, compRef);
 
     return compRef;
   }
 
+  private initializeDefaultAttributValues(): Array<AttributeValue> {
+    let all: AttributeValue = new AttributeValue();
+
+    all.attributeId = null;
+    all.attributeName = "All";
+    all.id = null;
+
+    let attrValues: Array<AttributeValue> = [];
+    attrValues.push(all);
+    
+    return attrValues;
+  }
+
   private removeAttributeFilterComponent(key: number):void {
-      // this.hashAttributeFilterComponents.get(key).instance.onFiltersUpdated.unsubscribe();
       this.attributeContainer.viewContainerRef.remove(key);
 
       this.hashAttributeFilterComponents.delete(key);
   }
 
   private findAttributeFilterUsable(category: Category): Array<AttributeType>{
-    // let typeIdsInUse: Array<number> = this.filteringService.getInUseAttributeTypeIds(); 
     let typeIdsInUse: Array<number> = []; 
     let highestDisplay: number = 500000;
     let zeroDisplayInUse: boolean = false;
@@ -153,7 +167,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       typeIdsInUse.push(comp.instance.selectedTypeId);
     });
     for (let id of typeIdsInUse){
-      let display: number = category.attributeTypes.find(att => att.typeId == id).displayOrder;
+      let display: number = category.AttributeTypes.find(att => att.typeId == id).displayOrder;
       zeroDisplayInUse = zeroDisplayInUse || (display === 0);
       if (display !== 0 
           && display < highestDisplay){
@@ -163,13 +177,13 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
 
     let attributeSubSet: Array<AttributeType> = [];
     if (!zeroDisplayInUse){
-      let attr0: AttributeType = category.attributeTypes.find(att => att.displayOrder == 0);
+      let attr0: AttributeType = category.AttributeTypes.find(att => att.displayOrder == 0);
       if (attr0){
         attributeSubSet.push(attr0);
       }
     }
 
-    for(let attr of category.attributeTypes){
+    for(let attr of category.AttributeTypes){
       if (attr.displayOrder > highestDisplay){
         attributeSubSet.push(attr);
       }
@@ -177,4 +191,12 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
 
     return attributeSubSet;
   }
+
+    private startSearch() {
+        this.filteringService.searchCompletedAudits(this.stopSearch)
+        .takeUntil(this.stopSearch)
+        .subscribe(
+
+        );
+    }
 }
