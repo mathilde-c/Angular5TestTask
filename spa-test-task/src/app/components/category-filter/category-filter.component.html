@@ -1,0 +1,9 @@
+
+<div>
+  <label for="categories">
+    Category:
+  </label>
+  <select [(ngModel)]="selectedValueId">
+      <option *ngFor="let value of attributeValuesList" [ngValue]="value.attributeId">{{value.attributeName}}</option>
+  </select>
+</div>

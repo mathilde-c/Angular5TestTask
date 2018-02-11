@@ -9,6 +9,8 @@
 <div class="main-container">
   <app-dates-filter (notifyDatesChanges)="onNotifyDatesChanges($event)"></app-dates-filter>
 
+  <app-category-filter></app-category-filter>
+
   <app-clear-filter (clearFiltersTriggered)="onFiltersClear()"></app-clear-filter>
 
   <app-category-attribute-filter 

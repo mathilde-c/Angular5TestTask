@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { DatesFilterComponent } from './components/dates-filter/dates-filter.component';
 import { ClearFilterComponent } from './components/clear-filter/clear-filter.component';
 import { CategoryAttributeFilterComponent } from './components/category-attribute-filter/category-attribute-filter.component';
+import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CategoryAttributeFilterComponent } from './components/category-attribut
     AppComponent,
     DatesFilterComponent,
     ClearFilterComponent,
-    CategoryAttributeFilterComponent
+    CategoryAttributeFilterComponent,
+    CategoryFilterComponent
   ],
   imports: [
     BrowserModule,
