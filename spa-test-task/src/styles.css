@@ -17,4 +17,9 @@ select {
     line-height: 2.5em;
     background-color: transparent;
     border-radius: 3px;
+    margin: 0.2em 0;
+}
+
+.dropdwon-label {
+    padding-right: 1em;
 }

@@ -1,12 +1,15 @@
+
 <div class="container">
-  <label for="categories">
-    Category:
-  </label>
-  <select  class="category-dropdown" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)">
-      <option *ngFor="let category of categoryList" [ngValue]="category" [selected]="selectedCategory.CategoryId == category.CategoryId">{{category.Name}}</option>
-  </select>
-</div>
-<div appAttributesFilterContainer class="container"></div>
-<div *ngIf="hasAttributeFilters()">
-  <app-clear-filter (clearFiltersTriggered)="clearLastAttributeFilter()"></app-clear-filter>
+    <div class="cat-dropdown-container">
+        <label class="dropdwon-label" for="categories">
+            Category:
+          </label>
+          <select  class="category-dropdown" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)">
+              <option *ngFor="let category of categoryList" [ngValue]="category" [selected]="selectedCategory.CategoryId == category.CategoryId">{{category.Name}}</option>
+          </select>
+    </div>
+    <div appAttributesFilterContainer></div>
+    <div class="clear-filter" *ngIf="hasAttributeFilters()">
+      <app-clear-filter (clearFiltersTriggered)="clearLastAttributeFilter()"></app-clear-filter>
+    </div>
 </div>

@@ -51,48 +51,4 @@ export class FilterService {
         this.fromDate = from;
         this.toDate = to;
     }
-    
-
-    // public clearAllAttributes(){
-    //     this.selectedAttributes = [];
-    // }
-
-    // public setSelectedAttribute(attributeTypeId: number, attributeValueId: number): number{
-    //     let index = this.retriveExistingAttributeFilterIndex(attributeTypeId);
-        
-    //     if (index > -1){
-    //         this.selectedAttributes[index].attributeId = attributeValueId;
-    //     } else {
-    //         index = this.selectedAttributes.length; 
-    //         this.selectedAttributes.push(new SelectedAttribute(index, attributeTypeId, attributeValueId));
-    //     }
-
-    //     return index;
-    // }
-
-    // public retriveExistingAttributeFilterIndex(attributeTypeId: number): number {
-    //     return this.selectedAttributes.findIndex(a => a.attributeId === attributeTypeId);
-    // }
-
-    // public removeLastAttributeFilter(): void{
-    //     if (this.selectedAttributes.length > 1){
-    //         this.selectedAttributes.pop();
-    //     }
-    // }
-
-    // public removeAllAttributeFilterFromIndex(startIndex: number): void{
-    //     while(this.selectedAttributes.length > startIndex)
-    //     {
-    //         this.selectedAttributes.pop();
-    //     }
-    // }
-
-    // public getInUseAttributeTypeIds(): Array<number> {
-    //     let inUse: Array<number> = [];
-    //     for(let attribute of this.selectedAttributes){
-    //         inUse.push(attribute.attributeFilterId)
-    //     }
-
-    //     return inUse;
-    // }
 }

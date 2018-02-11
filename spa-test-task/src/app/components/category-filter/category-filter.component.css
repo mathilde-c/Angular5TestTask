@@ -1,6 +1,25 @@
 .category-dropdown{
-    padding-right: 5em;
+    padding-right: 3.5em;
     width: 100%;
-    max-width: 60ex;
-    min-width: 25ex;
+    max-width: 61.5ex;
+    min-width: 26.5ex;
 }
+
+.cat-dropdown-container{
+    padding-right: 1.5em;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    display: flex;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+}
+
+.clear-filter{
+    padding-left: 0.6em;
+}
+

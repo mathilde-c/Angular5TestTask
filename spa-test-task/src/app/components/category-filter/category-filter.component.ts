@@ -132,6 +132,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
 
     let categoryAttributeFilterComponent  = this.componentFactoryResolver.resolveComponentFactory(CategoryAttributeFilterComponent);
     let compRef: ComponentRef<CategoryAttributeFilterComponent> = this.attributeContainer.viewContainerRef.createComponent(categoryAttributeFilterComponent);
+    
     compRef.instance.defaultSelectedAttributeTypeId = attributeTypeId;
     compRef.instance.id = index;
     compRef.instance.onFiltersUpdated.subscribe(
@@ -253,24 +254,24 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     // trigger search
   }
 
-    private updatefilteringServiceAttributeFilters() {
-        let attrFilters: Array<SelectedAttribute> =[];
-        this.hashAttributeFilterComponents.forEach((comp, key) => {
-          let selectedAttribute: SelectedAttribute = new SelectedAttribute(key, comp.instance.selectedTypeId, comp.instance.selectedValueId);
-          attrFilters.push(selectedAttribute);
-        });
+  private updatefilteringServiceAttributeFilters() {
+    let attrFilters: Array<SelectedAttribute> =[];
+    this.hashAttributeFilterComponents.forEach((comp, key) => {
+      let selectedAttribute: SelectedAttribute = new SelectedAttribute(key, comp.instance.selectedTypeId, comp.instance.selectedValueId);
+      attrFilters.push(selectedAttribute);
+    });
 
-        this.filteringService.setAttributesFilters(attrFilters);
-    }
+    this.filteringService.setAttributesFilters(attrFilters);
+  }
 
-    private triggerNewAttributeFilterComponentInitialization(compRef: ComponentRef<CategoryAttributeFilterComponent>) {
-        compRef.instance.ngOnInit();
-    }
+  private triggerNewAttributeFilterComponentInitialization(compRef: ComponentRef<CategoryAttributeFilterComponent>) {
+      compRef.instance.ngOnInit();
+  }
 
-    private getAttributeTypeList(category: Category): Array<AttributeType> {
-        return this.hashAttributeFilterComponents.size > 0
-                ? this.findAttributeFilterUsable(category)
-                : category.AttributeTypes;
-        }
-    }
+  private getAttributeTypeList(category: Category): Array<AttributeType> {
+      return this.hashAttributeFilterComponents.size > 0
+              ? this.findAttributeFilterUsable(category)
+              : category.AttributeTypes;
+  }
 }
+
