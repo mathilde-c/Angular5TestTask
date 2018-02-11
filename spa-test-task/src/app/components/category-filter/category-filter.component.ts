@@ -3,6 +3,7 @@ import { Category } from '../../models/Category';
 import { FilterService } from '../../services/filter.service';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-category-filter',
@@ -12,10 +13,12 @@ import 'rxjs/add/operator/takeUntil';
 export class CategoryFilterComponent implements OnInit, OnDestroy {
 
   public categoryList: Array<Category> = [];
+  public selectedCategoryId: number = null;
 
   private unsuscribeAll: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private filteringService: FilterService) { }
+  constructor(private filteringService: FilterService,
+              private categoryService: CategoryService) { }
 
   ngOnInit() {
       this.InitializeCategories();
@@ -24,13 +27,11 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     this.unsuscribeAll.next(true);
     this.unsuscribeAll.unsubscribe();
   }
-
-
   private InitializeCategories(): void {
       this.initializeAllCategoriesFitler();
 
       let listOfCategoryFomServer: Array<Category> = [];
-      this.filteringService.getCategories()
+      this.categoryService.getCategories()
         .takeUntil(this.unsuscribeAll)
         .subscribe(
           resultArray => {
@@ -47,5 +48,9 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       allCategories.defaultTypeId = null;
       allCategories.name = "All categories";
       this.categoryList.push(allCategories);
+  }
+
+  public onCategoryChange(event: number): void {
+    console.log("new cat:  " + event);
   }
 }
