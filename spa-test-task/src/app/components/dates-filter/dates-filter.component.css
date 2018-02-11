@@ -1,0 +1,16 @@
+.outer-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.single-date-picker-container {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    padding-right: 2em;
+}
+
+label {
+    min-width: 2.5em;
+    padding-right: 1em;
+}
