@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DatesFilter } from './models/dates-filter';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Angular5 Test task';
+
+  public onNotifyDatesChanges(updatedDatesFilter: DatesFilter): void {
+    console.log("value updated :: from: " + updatedDatesFilter.from + " | to: " + updatedDatesFilter.to);
+  }
+
+  public onFiltersClear(): void {
+    console.log("clear filter triggered");
+  }
 }

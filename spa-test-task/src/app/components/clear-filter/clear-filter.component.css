@@ -1,0 +1,15 @@
+button {
+    width: 2.5em;
+    height: 2.5em;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #bbb; 
+}
+
+i {
+    font-size: 17px;
+    color: #333;
+}

@@ -9,12 +9,14 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { DatesFilterComponent } from './components/dates-filter/dates-filter.component';
+import { ClearFilterComponent } from './components/clear-filter/clear-filter.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DatesFilterComponent
+    DatesFilterComponent,
+    ClearFilterComponent
   ],
   imports: [
     BrowserModule,
