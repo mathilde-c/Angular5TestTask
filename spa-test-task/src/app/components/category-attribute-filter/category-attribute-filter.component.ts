@@ -12,6 +12,7 @@ import { SelectedAttribute } from '../../models/selected-attribute';
 export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
   @Input() attributeTypesList: Array<AttributeType>;
   @Input() attributeValuesList: Array<AttributeValue>;
+  @Input() defaultSelectedAttributeTypeId: number; 
 
   @Output() onFiltersUpdated: EventEmitter<SelectedAttribute> = new EventEmitter<SelectedAttribute>();
 
@@ -33,8 +34,8 @@ export class CategoryAttributeFilterComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-    this.selectedTypeIdValue = this.attributeTypesList[0].typeId;
-    this.selectedValueIdValue = this.attributeValuesList[0].attributeId;
+    this.selectedTypeIdValue = this.defaultSelectedAttributeTypeId ? this.defaultSelectedAttributeTypeId : this.attributeTypesList[0].typeId;
+    this.selectedValueIdValue = (this.attributeValuesList && this.attributeValuesList.length > 0) ? this.attributeValuesList[0].attributeId : null;
   }
 
   ngOnDestroy(): void {

@@ -17,6 +17,7 @@ import { CategoryFilterComponent } from './components/category-filter/category-f
 import { UserService } from './services/user.service';
 import { CategoryService } from './services/category.service';
 import { FilterService } from './services/filter.service';
+import { AttributesFilterContainerDirective } from './tools/attributes-filter-container.directive';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { FilterService } from './services/filter.service';
     DatesFilterComponent,
     ClearFilterComponent,
     CategoryAttributeFilterComponent,
-    CategoryFilterComponent
+    CategoryFilterComponent,
+    AttributesFilterContainerDirective
   ],
   imports: [
     BrowserModule,
@@ -46,7 +48,7 @@ import { FilterService } from './services/filter.service';
     CategoryService,
     FilterService
   ],
-
+  entryComponents: [CategoryAttributeFilterComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

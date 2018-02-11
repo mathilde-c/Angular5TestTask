@@ -1,9 +1,18 @@
 
-<div>
+<div class="container">
   <label for="categories">
     Category:
   </label>
-  <select  class="category-dropdown" [(ngModel)]="selectedCategoryId" (ngModelChange)="onCategoryChange($event)">
-      <option *ngFor="let category of categoryList" [ngValue]="category.categoryId">{{category.name}}</option>
+  <select  class="category-dropdown" [(ngModel)]="selectedCategory" (ngModelChange)="onCategoryChange($event)">
+      <option *ngFor="let category of categoryList" [ngValue]="category" [selected]="selectedCategory.categoryId == category.categoryId">{{category.name}}</option>
   </select>
 </div>
+<!-- <ng-container *ngIf=selectedCategory.categoryId> -->
+  <div appAttributesFilterContainer class="container">
+      <!-- <app-category-attribute-filter 
+        [attributeTypesList]="selectedCategory.attributeTypes" 
+        [attributeValuesList]="attributeValueList" 
+        [defaultSelectedAttributeTypeId]="selectedCategory.defaultTypeId">
+      </app-category-attribute-filter> -->
+  </div>
+<!-- </ng-container> -->

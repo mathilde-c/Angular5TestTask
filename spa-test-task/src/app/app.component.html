@@ -13,10 +13,18 @@
 
   <app-clear-filter (clearFiltersTriggered)="onFiltersClear()"></app-clear-filter>
 
-  <app-category-attribute-filter 
+  <!-- <app-category-attribute-filter 
   [attributeTypesList]="attributeTypesList" 
   [attributeValuesList]="attributeValueList" 
   (onFiltersUpdated)="onUpdateSub($event)">
-</app-category-attribute-filter>
+  </app-category-attribute-filter>
+
+  
+  <app-category-attribute-filter 
+    [attributeTypesList]="attributeTypesList" 
+    [attributeValuesList]="attributeValueList" 
+    [defaultSelectedAttributeTypeId]="2"
+    (onFiltersUpdated)="onUpdateSub($event)">
+  </app-category-attribute-filter> -->
 
 </div>

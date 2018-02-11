@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
     this.attributeValueList.push(av);
     av = new AttributeValue();
     av.id = 15;
-    av.attributeId = 4258;
+    av.attributeId = 700;
     av.attributeName = "XXXX";
     this.attributeValueList.push(av);;
 
