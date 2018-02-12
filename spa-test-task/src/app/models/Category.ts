@@ -1,9 +1,9 @@
 import { AttributeType } from "./attribute-type";
 
-export class Category {
+export interface Category {
     CategoryId: number;
     Name: string;
     DemeritStartingScore: number;
     DefaultTypeId: number;
-    AttributeTypes: Array<AttributeType>;
+    AttributeTypes: AttributeType[];
 }

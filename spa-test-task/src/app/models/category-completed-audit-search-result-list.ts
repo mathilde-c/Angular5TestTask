@@ -1,6 +1,6 @@
 import { CategoryCompletedAuditSearchResult } from "./category-completed-audit-search-result";
 
-export class CategoryCompletedAuditSearchResultList {
+export interface CategoryCompletedAuditSearchResultList {
     Items: Array<CategoryCompletedAuditSearchResult>;
     TotalAuditCount: number;
     TotalFailedAuditCount: number;

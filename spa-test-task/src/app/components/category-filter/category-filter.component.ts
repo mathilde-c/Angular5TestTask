@@ -21,14 +21,14 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   @ViewChild(AttributesFilterContainerDirective) attributeContainer: AttributesFilterContainerDirective;
 
   public categoryList: Array<Category> = [];
-  private allCategoriesCat = new Category();
+  private allCategoriesCat: Category;
   public get selectedCategory() { return this.selectedCategoryValue; }
   public set selectedCategory(val) { 
     this.selectedCategoryValue = val;
     this.filteringService.setCategory(val); 
   }
   
-  private selectedCategoryValue = new Category();
+  private selectedCategoryValue: Category;
 
   private hashAttributeFilterComponents = new Map<number, ComponentRef<CategoryAttributeFilterComponent>>(); 
 
@@ -68,10 +68,17 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   }
 
   private initializeAllCategoriesCat() {
-      this.allCategoriesCat.AttributeTypes = [];
-      this.allCategoriesCat.CategoryId = null;
-      this.allCategoriesCat.DefaultTypeId = null;
-      this.allCategoriesCat.Name = "All categories";
+      this.allCategoriesCat = {
+        AttributeTypes: [],
+        CategoryId: null,
+        DefaultTypeId: null,
+        DemeritStartingScore: 0,
+        Name: "All categories"
+      };
+      // this.allCategoriesCat.AttributeTypes = [];
+      // this.allCategoriesCat.CategoryId = null;
+      // this.allCategoriesCat.DefaultTypeId = null;
+      // this.allCategoriesCat.Name = ;
   }
 
   public onCategoryChange(newCategory: Category): void {

@@ -11,7 +11,7 @@ import { DatesFilter } from '../../models/dates-filter';
 })
 export class FiltersComponent implements OnInit, OnDestroy {
 
-  private stopSearch: Subject<boolean> = new Subject<boolean>();
+  public stopSearch: Subject<boolean> = new Subject<boolean>();
   
   constructor(private filteringService: FilterService) { }
 

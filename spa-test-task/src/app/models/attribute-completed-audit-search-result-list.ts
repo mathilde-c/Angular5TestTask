@@ -1,7 +1,7 @@
 import { AttributeCompletedAuditSearchResult } from "./attribute-completed-audit-search-result";
 
 
-export class AttributeCompletedAuditSearchResultList {
+export interface AttributeCompletedAuditSearchResultList {
     Items: Array<AttributeCompletedAuditSearchResult>;
     TotalAuditCount: number;
     TotalFailedAuditCount: number;
