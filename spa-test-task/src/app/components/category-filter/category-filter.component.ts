@@ -113,8 +113,12 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       }
 
       if (attributeValueId != null){
-        // trigger create of new component
+        // trigger create of new level of filtering (new component)
         this.createAttributeFilterComponent(null, this.hashAttributeFilterComponents.size, category);
+      } else{
+        // reinitialize the attributesValues for component 
+        let comp: ComponentRef<CategoryAttributeFilterComponent> = this.hashAttributeFilterComponents.get(idOfAttributeComponent);
+        comp.instance.attributeValuesList = this.initializeDefaultAttributValues();
       }
     } else {
       this.createAttributeFilterComponent(attributeTypeId, this.hashAttributeFilterComponents.size, category);
