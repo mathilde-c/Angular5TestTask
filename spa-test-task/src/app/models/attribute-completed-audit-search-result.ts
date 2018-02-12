@@ -19,4 +19,5 @@ export class AttributeCompletedAuditSearchResult implements ItemCompletedAuditSe
     PassedAuditCount: number;
     AttributeId: number;
     AttributeName: string;
+    Id: number;
 }

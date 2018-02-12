@@ -7,7 +7,7 @@ export class AttributeCompletedAuditSearchResultList implements ItemCompletedAud
     getItems(): AttributeCompletedAuditSearchResult[] {
         return this.Items;
     }
-    Items: Array<AttributeCompletedAuditSearchResult>;
+    Items: AttributeCompletedAuditSearchResult[];
     TotalAuditCount: number;
     TotalFailedAuditCount: number;
     TotalPassedAuditCount: number;

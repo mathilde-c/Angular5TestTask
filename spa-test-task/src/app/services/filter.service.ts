@@ -67,7 +67,14 @@ export class FilterService {
             })
             this.upToDateSearchResults.next(mappedArry);
             this.upToDateSearchResultsTitle.next(this.currentCategory.Name);
-            return list;
+
+            let resultList: AttributeCompletedAuditSearchResultList = new AttributeCompletedAuditSearchResultList();
+            resultList.Items = mappedArry;
+            resultList.TotalAuditCount = list.TotalAuditCount;
+            resultList.TotalFailedAuditCount = list.TotalFailedAuditCount;
+            resultList.TotalPassedAuditCount = list.TotalPassedAuditCount;
+
+            return resultList;
         });
     }
     private getGroupingAttributeTypeId(): number {

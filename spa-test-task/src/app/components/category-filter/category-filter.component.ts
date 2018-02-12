@@ -11,6 +11,9 @@ import { CategoryAttributeFilterComponent } from '../category-attribute-filter/c
 import { AttributeType } from '../../models/attribute-type';
 import { AttributeValue } from '../../models/attribute-value';
 import { AttributeCompletedAuditSearchResultList } from '../../models/attribute-completed-audit-search-result-list';
+import { ItemCompletedAuditSearchResultList } from '../../models/item-completed-audit-search-result-list';
+import { AttributeCompletedAuditSearchResult } from '../../models/attribute-completed-audit-search-result';
+import { ItemCompletedAuditSearchResult } from '../../models/item-completed-audit-search-result';
 
 @Component({
   selector: 'app-category-filter',
@@ -46,7 +49,6 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     this.InitializeCategories();
 
     this.selectedCategory = this.allCategoriesCat;
-    // this.onCategoryChange(this.selectedCategory);
   }
   ngOnDestroy(): void {
     this.unsuscribeAll.next(true);
@@ -76,10 +78,6 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
         DemeritStartingScore: 0,
         Name: "All categories"
       };
-      // this.allCategoriesCat.AttributeTypes = [];
-      // this.allCategoriesCat.CategoryId = null;
-      // this.allCategoriesCat.DefaultTypeId = null;
-      // this.allCategoriesCat.Name = ;
   }
 
   public onCategoryChange(newCategory: Category): void {
@@ -171,14 +169,6 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     all.AttributeName = "All";
     all.Id = -1;
     attrValues.push(all);
-
-    all = new AttributeValue();
-    
-        all.AttributeId = 3;
-        all.AttributeName = "tmp test";
-        all.Id = 1;
-
-    attrValues.push(all);
     
     return attrValues;
   }
@@ -237,11 +227,51 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       this.filteringService.searchCompletedAudits(this.stopSearch)
       .takeUntil(this.stopSearch)
       .subscribe(
-        (v: AttributeCompletedAuditSearchResultList) => {
-            console.log("Search done");
+        (resultList: ItemCompletedAuditSearchResultList) => {
+          if (resultList 
+            && resultList.getItems().length > 0
+            && this.selectedCategory != null){
+            let latestAttributeFilter = this.retriveLatestAttributeFilter();
+
+            if (latestAttributeFilter != null
+              && !this.areLatestAttributeFilterValuesSetFromServer(latestAttributeFilter)){
+              this.updateLatestAttributeFilterValuesSetFromServer(latestAttributeFilter, resultList.getItems());
+            }
+          }
         },
         error => console.log("Error :: " + error)
       );
+  }
+
+  private retriveLatestAttributeFilter(): ComponentRef<CategoryAttributeFilterComponent> {
+    if (this.hashAttributeFilterComponents.size === 0){
+      return null;
+    }
+
+    let highestIndex = -1;
+    this.hashAttributeFilterComponents.forEach((comp, key) => 
+                  { 
+                    if (key > highestIndex) 
+                    { 
+                      highestIndex = key 
+                    }});
+
+    return this.hashAttributeFilterComponents.get(highestIndex);
+  }
+
+  private areLatestAttributeFilterValuesSetFromServer(latestAttributeFilter: ComponentRef<CategoryAttributeFilterComponent>): boolean {
+    return latestAttributeFilter.instance.attributeValuesList.length > 1;
+  }
+  private updateLatestAttributeFilterValuesSetFromServer(latestAttributeFilter: ComponentRef<CategoryAttributeFilterComponent>
+                                                          , results: ItemCompletedAuditSearchResult[]): void {
+    results.forEach(result =>
+      {
+        let attr: AttributeValue = new AttributeValue();
+        attr.AttributeId = result.getId();
+        attr.AttributeName = result.getName();
+
+        latestAttributeFilter.instance.attributeValuesList.push(attr);
+      });
   }
 
   public hasAttributeFilters(): boolean {
