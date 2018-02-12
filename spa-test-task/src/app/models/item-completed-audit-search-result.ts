@@ -1,4 +1,5 @@
 import { CategoryCompletedAuditSearchResult } from "./category-completed-audit-search-result";
+import { AttributeCompletedAuditSearchResult } from "./attribute-completed-audit-search-result";
 
 export class ItemCompletedAuditSearchResult {
     Id: number;
@@ -16,8 +17,8 @@ export class ItemCompletedAuditSearchResult {
     }
     
     public setFromAttributeCompletedAuditresultObject(item: AttributeCompletedAuditSearchResult){
-        this.Id = item.CategoryId;
-        this.Name = item.CategoryName;
+        this.Id = item.AttributeId;
+        this.Name = item.AttributeName;
         this.FailedAuditCount = item.FailedAuditCount;
         this.PassedAuditCount = item.PassedAuditCount;
         this.CompletedAuditCount = item.CompletedAuditCount;

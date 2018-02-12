@@ -12,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 export class SearchResultComponent implements OnInit, OnDestroy {
 
   private resultList: Array<ItemCompletedAuditSearchResult> = [];
+  private resultTypeTitle: string = "";
   private unsuscrieAll: Subject<boolean> = new Subject<boolean>();
 
   constructor(private filterService: FilterService) { }
@@ -22,7 +23,14 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .subscribe(
         (resultArray: Array<ItemCompletedAuditSearchResult>) => this.resultList = resultArray,
         error => console.log("Error :: " + error)
-      )
+      );
+
+    this.filterService.upToDateSearchResultsTitle
+    .takeUntil(this.unsuscrieAll)
+    .subscribe(
+      (title) => this.resultTypeTitle = title,
+      error => console.log("Error :: " + error)
+    );
   }
 
   ngOnDestroy(): void {

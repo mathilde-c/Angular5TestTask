@@ -1,3 +1,9 @@
-<div *ngFor="let result of resultList">
-<div>{{result.Name}}</div>
+
+<div class="container component">
+  <div>Result Title: {{upToDateSearchResultsTitle}} </div>
+  
+  <div *ngFor="let result of resultList">
+    <div>{{result.Name}}</div>
+    </div>
+
 </div>

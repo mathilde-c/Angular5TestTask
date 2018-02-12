@@ -21,6 +21,7 @@ export class FilterService {
     private selectedAttributes: Array<SelectedAttribute> = [];
     private datesFilter: DatesFilter = null;
     public upToDateSearchResults: BehaviorSubject<Array<ItemCompletedAuditSearchResult>> = new  BehaviorSubject<Array<ItemCompletedAuditSearchResult>>([]);
+    public upToDateSearchResultsTitle: BehaviorSubject<string> = new  BehaviorSubject<string>('');
 
     constructor(private http: HttpClient,
         private apiService: ApiCallService,
@@ -68,6 +69,7 @@ export class FilterService {
                             return item;
                         })
                     this.upToDateSearchResults.next(mappedArry);
+                    this.upToDateSearchResultsTitle.next("Category");
                     return list.Items;
                 });
     }
