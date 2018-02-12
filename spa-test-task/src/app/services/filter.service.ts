@@ -5,20 +5,25 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { UserService } from './user.service';
-import { Category } from '../models/category';
-import { SelectedAttribute } from '../models/selected-attribute';
-import { DatesFilter } from '../models/dates-filter';
 import { ApiCallService } from './api-call.service';
 import { CategoryCompletedAuditSearchResultList } from '../models/category-completed-audit-search-result-list';
 import { CategoriesCompletedAuditListRequestPayload } from '../models/categories-completed-audit-list-request-payload';
 import { CategoryCompletedAuditSearchResult } from '../models/category-completed-audit-search-result';
 import { ItemCompletedAuditSearchResult } from '../models/item-completed-audit-search-result';
+import { AttributeCompletedAuditSearchResult } from '../models/attribute-completed-audit-search-result';
+import { AttributeCompletedAuditSearchResultList } from '../models/attribute-completed-audit-search-result-list';
+import { Category } from '../models/category';
+import { SelectedAttributeFilter } from '../models/selected-attribute-filter';
+import { DatesFilter } from '../models/dates-filter';
+import { AttributeCompletedAuditListRequestPayload } from '../models/attribute-completed-audit-list-request-payload';
+import { SelectedAttributePayload } from '../models/selected-attribute-payload';
+import { ItemCompletedAuditSearchResultList } from '../models/item-completed-audit-search-result-list';
 
 @Injectable()
 export class FilterService {
 
-    private currentCategoryId: number = null;
-    private selectedAttributes: Array<SelectedAttribute> = [];
+    private currentCategory: Category = null;
+    private selectedAttributes: Array<SelectedAttributeFilter> = [];
     private datesFilter: DatesFilter = null;
     public upToDateSearchResults: BehaviorSubject<Array<ItemCompletedAuditSearchResult>> = new  BehaviorSubject<Array<ItemCompletedAuditSearchResult>>([]);
     public upToDateSearchResultsTitle: BehaviorSubject<string> = new  BehaviorSubject<string>('');
@@ -27,33 +32,69 @@ export class FilterService {
         private apiService: ApiCallService,
     private userService: UserService) { }
 
-    public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<Array<CategoryCompletedAuditSearchResult>> {
+    public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<ItemCompletedAuditSearchResultList> {
 
-        if (this.currentCategoryId != null){
-            // call AuditScores on Category
+        if (this.currentCategory != null
+            && this.currentCategory.CategoryId != null){
+            return this.AuditOnSpecificCategory(stopSearch);
         } else {
-            // call CategoryAuditScores
             return this.AuditOnAllCategories(stopSearch);
         }
-        //api call takeUntil(stopWatch)
-        let dummyResults: Array<CategoryCompletedAuditSearchResult> = [];
-
-        let dummy: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
-        dummy.CategoryName = "dummyResult";
-        dummy.CategoryId = 1;
-        dummy.CompletedAuditCount = 2;
-        dummy.FailedAuditCount = 0;
-        dummyResults.push(dummy)
-        dummy.CategoryName = "dummyResult2";
-        dummy.CategoryId = 2;
-        dummy.CompletedAuditCount = 5;
-        dummy.FailedAuditCount = 7;
-        dummyResults.push(dummy)
-
-        return Observable.of(dummyResults);
     }
 
-    private AuditOnAllCategories(stopSearch: Subject<boolean>): Observable<Array<CategoryCompletedAuditSearchResult>> {
+    private AuditOnSpecificCategory(stopSearch: Subject<boolean>): Observable<AttributeCompletedAuditSearchResultList> {
+        let body: AttributeCompletedAuditListRequestPayload = new AttributeCompletedAuditListRequestPayload();
+        body.CategoryId = this.currentCategory.CategoryId;
+        body.StartMillis = this.datesFilter.fromMilliSec;
+        body.EndMillis = this.datesFilter.toMilliSec;
+        body.GroupByAttributeTypeId = this.getGroupingAttributeTypeId();
+        body.SelectedAttributes = this.getSelectAttributesFilterWithValueId();
+        body.UserId = this.userService.getUserId();
+
+        return this.apiService.makePostCall<AttributeCompletedAuditSearchResultList>("CompletedAudits", body)
+        .takeUntil(stopSearch)
+        .map(list => {
+            let mappedArry: AttributeCompletedAuditSearchResult[]= list.Items.map(x => 
+            {
+                let item: AttributeCompletedAuditSearchResult = new AttributeCompletedAuditSearchResult();
+                item.AttributeId = x.AttributeId;
+                item.AttributeName = x.AttributeName;
+                item.CompletedAuditCount = x.CompletedAuditCount;
+                item.FailedAuditCount = x.FailedAuditCount;
+                item.PassedAuditCount = x.PassedAuditCount;
+
+                return item;
+            })
+            this.upToDateSearchResults.next(mappedArry);
+            this.upToDateSearchResultsTitle.next(this.currentCategory.Name);
+            return list;
+        });
+    }
+    private getGroupingAttributeTypeId(): number {
+        return this.selectedAttributes[this.selectedAttributes.length-1].TypeId;
+    }
+
+    private getSelectAttributesFilterWithValueId(): SelectedAttributePayload[] {
+        let attributes: SelectedAttributePayload[] = this.selectedAttributes.map(attr =>
+            {
+                let payload: SelectedAttributePayload = {
+                    TypeId: attr.TypeId,
+                    AttributeId: attr.AttributeId
+                }
+                return payload;
+            });
+
+        if (!this.hasLastAttributeFilterValue(attributes)) {
+            attributes.pop();
+        }
+        return attributes;
+    }
+    private hasLastAttributeFilterValue(attributes: SelectedAttributePayload[]): any {
+        return attributes[attributes.length-1].AttributeId !== null 
+                && typeof(attributes[attributes.length-1].AttributeId) !== 'undefined';
+    }
+
+    private AuditOnAllCategories(stopSearch: Subject<boolean>): Observable<CategoryCompletedAuditSearchResultList> {
         let body: CategoriesCompletedAuditListRequestPayload = new CategoriesCompletedAuditListRequestPayload();
         body.UserId = this.userService.getUserId();
         body.StartMillis = this.datesFilter.fromMilliSec;
@@ -62,23 +103,28 @@ export class FilterService {
         return this.apiService.makePostCall<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
                 .takeUntil(stopSearch)
                 .map(list => {
-                    let mappedArry: ItemCompletedAuditSearchResult[]= list.Items.map(x => 
-                        {
-                            let item: ItemCompletedAuditSearchResult = new ItemCompletedAuditSearchResult();
-                            item.setFromCategoryCompletedAuditresultObject(x)
-                            return item;
-                        })
+                    let mappedArry: CategoryCompletedAuditSearchResult[]= list.Items.map(x => 
+                    {
+                        let item: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
+                        item.CategoryId = x.CategoryId;
+                        item.CategoryName = x.CategoryName;
+                        item.CompletedAuditCount = x.CompletedAuditCount;
+                        item.FailedAuditCount = x.FailedAuditCount;
+                        item.PassedAuditCount = x.PassedAuditCount;
+
+                        return item;
+                    })
                     this.upToDateSearchResults.next(mappedArry);
                     this.upToDateSearchResultsTitle.next("Category");
-                    return list.Items;
+                    return list;
                 });
     }
 
     public setCategory(newCategory: Category): void {
-        this.currentCategoryId = newCategory.CategoryId;
+        this.currentCategory = newCategory;
     }
 
-    public setAttributesFilters (filters: Array<SelectedAttribute>): void {
+    public setAttributesFilters (filters: Array<SelectedAttributeFilter>): void {
         this.selectedAttributes = filters;
     }
 

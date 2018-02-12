@@ -22,7 +22,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .takeUntil(this.unsuscrieAll)
       .subscribe(
         (resultArray: Array<ItemCompletedAuditSearchResult>) => {
-          this.resultList = resultArray
+            this.resultList = resultArray;
         },
         error => console.log("Error :: " + error)
       );

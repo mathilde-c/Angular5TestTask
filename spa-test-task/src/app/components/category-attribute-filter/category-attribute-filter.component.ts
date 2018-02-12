@@ -2,7 +2,7 @@ import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angu
 
 import { AttributeType } from '../../models/attribute-type';
 import { AttributeValue } from '../../models/attribute-value';
-import { SelectedAttribute } from '../../models/selected-attribute';
+import { SelectedAttributeFilter } from '../../models/selected-attribute-filter';
 
 @Component({
   selector: 'app-category-attribute-filter',
@@ -14,7 +14,7 @@ export class CategoryAttributeFilterComponent implements OnInit {
   @Input() attributeValuesList: Array<AttributeValue>;
   @Input() defaultSelectedAttributeTypeId: number; 
 
-  @Output() onFiltersUpdated: EventEmitter<SelectedAttribute> = new EventEmitter<SelectedAttribute>();
+  @Output() onFiltersUpdated: EventEmitter<SelectedAttributeFilter> = new EventEmitter<SelectedAttributeFilter>();
 
   public id: number = null;
 
@@ -41,7 +41,7 @@ export class CategoryAttributeFilterComponent implements OnInit {
   }
 
   private EmitSelectAttributes(): void {
-    let selectedOptions = new SelectedAttribute(this.id, this.selectedTypeId, this.selectedValueIdValue);
+    let selectedOptions = new SelectedAttributeFilter(this.id, this.selectedTypeId, this.selectedValueIdValue);
 
     this.onFiltersUpdated.emit(selectedOptions);
   }

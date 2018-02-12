@@ -5,11 +5,12 @@ import 'rxjs/add/operator/takeUntil';
 import { CategoryService } from '../../services/category.service';
 import { FilterService } from '../../services/filter.service';
 import { AttributesFilterContainerDirective } from '../../tools/attributes-filter-container.directive';
-import { SelectedAttribute } from '../../models/selected-attribute';
+import { SelectedAttributeFilter } from '../../models/selected-attribute-filter' ;
 import { Category } from '../../models/category';
 import { CategoryAttributeFilterComponent } from '../category-attribute-filter/category-attribute-filter.component';
 import { AttributeType } from '../../models/attribute-type';
 import { AttributeValue } from '../../models/attribute-value';
+import { AttributeCompletedAuditSearchResultList } from '../../models/attribute-completed-audit-search-result-list';
 
 @Component({
   selector: 'app-category-filter',
@@ -142,9 +143,9 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     compRef.instance.defaultSelectedAttributeTypeId = attributeTypeId;
     compRef.instance.id = index;
     compRef.instance.onFiltersUpdated.subscribe(
-      (selectedAttribute: SelectedAttribute) => {
+      (selectedAttribute: SelectedAttributeFilter) => {
         console.log("selected attribute change!! : " + selectedAttribute);
-        this.setSelectedAttribute(selectedAttribute.typeId, null, selectedAttribute.attributeId, selectedAttribute.attributeFilterId);
+        this.setSelectedAttribute(selectedAttribute.TypeId, null, selectedAttribute.AttributeId, selectedAttribute.AttributeFilterId);
         this.startSearch();
       }
     );
@@ -236,7 +237,10 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       this.filteringService.searchCompletedAudits(this.stopSearch)
       .takeUntil(this.stopSearch)
       .subscribe(
-
+        (v: AttributeCompletedAuditSearchResultList) => {
+            console.log("Search done");
+        },
+        error => console.log("Error :: " + error)
       );
   }
 
@@ -260,9 +264,9 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   }
 
   private updatefilteringServiceAttributeFilters() {
-    let attrFilters: Array<SelectedAttribute> =[];
+    let attrFilters: Array<SelectedAttributeFilter> =[];
     this.hashAttributeFilterComponents.forEach((comp, key) => {
-      let selectedAttribute: SelectedAttribute = new SelectedAttribute(key, comp.instance.selectedTypeId, comp.instance.selectedValueId);
+      let selectedAttribute: SelectedAttributeFilter = new SelectedAttributeFilter(key, comp.instance.selectedTypeId, comp.instance.selectedValueId);
       attrFilters.push(selectedAttribute);
     });
 
