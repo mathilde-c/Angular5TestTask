@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { UserService } from './user.service';
 import { Category } from '../models/category';
 import { SelectedAttribute } from '../models/selected-attribute';
-import { CompletedAuditSearchResult } from '../models/completed-audit-search-result';
 import { DatesFilter } from '../models/dates-filter';
 import { ApiCallService } from './api-call.service';
+import { CategoryCompletedAuditSearchResultList } from '../models/category-completed-audit-search-result-list';
+import { CategoriesCompletedAuditListRequestPayload } from '../models/categories-completed-audit-list-request-payload';
+import { CategoryCompletedAuditSearchResult } from '../models/category-completed-audit-search-result';
 
 @Injectable()
 export class FilterService {
@@ -16,12 +19,13 @@ export class FilterService {
     private currentCategoryId: number = null;
     private selectedAttributes: Array<SelectedAttribute> = [];
     private datesFilter: DatesFilter = null;
+    public upToDateSearchResult: BehaviorSubject<Array<CategoryCompletedAuditSearchResult>> = new  BehaviorSubject<Array<CategoryCompletedAuditSearchResult>>([]);
 
     constructor(private http: HttpClient,
         private apiService: ApiCallService,
     private userService: UserService) { }
 
-    public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<Array<CompletedAuditSearchResult>> {
+    public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<Array<CategoryCompletedAuditSearchResult>> {
 
         if (this.currentCategoryId != null){
             // call AuditScores on Category
@@ -30,9 +34,9 @@ export class FilterService {
             return this.AuditOnAllCategories(stopSearch);
         }
         //api call takeUntil(stopWatch)
-        let dummyResults: Array<CompletedAuditSearchResult> = [];
+        let dummyResults: Array<CategoryCompletedAuditSearchResult> = [];
 
-        let dummy: CompletedAuditSearchResult = new CompletedAuditSearchResult();
+        let dummy: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
         dummy.CategoryName = "dummyResult";
         dummy.CategoryId = 1;
         dummy.CompletedAuditCount = 2;
@@ -47,21 +51,17 @@ export class FilterService {
         return Observable.of(dummyResults);
     }
 
-    private AuditOnAllCategories(arg0: any): any {
-        const httpOptions = {
-            headers: new HttpHeaders({
-              "Content-Type":  "application/json",
-              "Accept": "application/json"
-            })};
-    
-            let body: any = {
-                "userId": 28,
-                "categoryId": 0,
-                "loadAttributes": true
-              };
-    
-        return  this.apiService.makePostCall<Category[]>("Category", body);
-        //return this.http.post<Category[]>("http://incontrolpty.australiaeast.cloudapp.azure.com:7123/WebServices/api/" + "Category", body, httpOptions);
+    private AuditOnAllCategories(stopSearch: Subject<boolean>): Observable<Array<CategoryCompletedAuditSearchResult>> {
+        let body: CategoriesCompletedAuditListRequestPayload = new CategoriesCompletedAuditListRequestPayload();
+        body.UserId = this.userService.getUserId();
+        body.StartMillis = this.datesFilter.fromMilliSec;
+        body.EndMillis = this.datesFilter.toMilliSec;
+
+        return this.apiService.makePostCall<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
+                .takeUntil(stopSearch)
+                .map(list => {
+                    return list.Items;
+                });
     }
 
     public setCategory(newCategory: Category): void {

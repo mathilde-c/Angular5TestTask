@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewContainerRef, ViewChild, ComponentRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewContainerRef, ViewChild, ComponentRef, Input } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
@@ -17,6 +17,7 @@ import { AttributeValue } from '../../models/attribute-value';
   styleUrls: ['./category-filter.component.css']
 })
 export class CategoryFilterComponent implements OnInit, OnDestroy {
+  @Input() stopSearch: Subject<boolean>;
   @ViewChild(AttributesFilterContainerDirective) attributeContainer: AttributesFilterContainerDirective;
 
   public categoryList: Array<Category> = [];
@@ -32,7 +33,6 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   private hashAttributeFilterComponents = new Map<number, ComponentRef<CategoryAttributeFilterComponent>>(); 
 
   private unsuscribeAll: Subject<boolean> = new Subject<boolean>();
-  private stopSearch: Subject<boolean> = new Subject<boolean>();
 
   constructor(private filteringService: FilterService,
               private categoryService: CategoryService,
@@ -45,14 +45,11 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     this.InitializeCategories();
 
     this.selectedCategory = this.allCategoriesCat;
-    this.onCategoryChange(this.selectedCategory);
+    // this.onCategoryChange(this.selectedCategory);
   }
   ngOnDestroy(): void {
     this.unsuscribeAll.next(true);
     this.unsuscribeAll.unsubscribe();
-
-    this.stopSearch.next(true);
-    this.stopSearch.unsubscribe();
   }
 
   private InitializeCategories(): void {

@@ -1,9 +1,9 @@
 export class DatesFilter {
-    from: Date;
-    to: Date;
+    fromMilliSec: number;
+    toMilliSec: number;
 
-    constructor(from: Date, to: Date) {
-        this.from = from;
-        this.to = to;
+    constructor(from: number, to: number) {
+        this.fromMilliSec = from;
+        this.toMilliSec = to;
     }
 }

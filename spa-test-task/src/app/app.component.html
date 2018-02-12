@@ -7,24 +7,5 @@
 </div>
 
 <div class="main-container">
-  <app-dates-filter (notifyDatesChanges)="onNotifyDatesChanges($event)"></app-dates-filter>
-
-  <app-category-filter></app-category-filter>
-
-  <!-- <app-clear-filter (clearFiltersTriggered)="onFiltersClear()"></app-clear-filter> -->
-
-  <!-- <app-category-attribute-filter 
-  [attributeTypesList]="attributeTypesList" 
-  [attributeValuesList]="attributeValueList" 
-  (onFiltersUpdated)="onUpdateSub($event)">
-  </app-category-attribute-filter>
-
-  
-  <app-category-attribute-filter 
-    [attributeTypesList]="attributeTypesList" 
-    [attributeValuesList]="attributeValueList" 
-    [defaultSelectedAttributeTypeId]="2"
-    (onFiltersUpdated)="onUpdateSub($event)">
-  </app-category-attribute-filter> -->
-
+  <app-filters></app-filters>
 </div>
