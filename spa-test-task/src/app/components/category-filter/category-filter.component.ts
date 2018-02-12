@@ -65,8 +65,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
         (resultArray: Array<Category>) => {
           let v:Category[] = resultArray.map(c => { let cat: Category = c; return cat; });
           this.categoryList = this.categoryList.concat(v);
-        },
-        error => console.log("Error :: " + error)
+        }
       );
   }
 
@@ -142,7 +141,6 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     compRef.instance.id = index;
     compRef.instance.onFiltersUpdated.subscribe(
       (selectedAttribute: SelectedAttributeFilter) => {
-        console.log("selected attribute change!! : " + selectedAttribute);
         this.setSelectedAttribute(selectedAttribute.TypeId, null, selectedAttribute.AttributeId, selectedAttribute.AttributeFilterId);
         this.startSearch();
       }
@@ -238,8 +236,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
               this.updateLatestAttributeFilterValuesSetFromServer(latestAttributeFilter, resultList.getItems());
             }
           }
-        },
-        error => console.log("Error :: " + error)
+        }
       );
   }
 

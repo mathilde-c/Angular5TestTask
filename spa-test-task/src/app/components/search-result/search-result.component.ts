@@ -23,8 +23,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .subscribe(
         (resultArray: Array<ItemCompletedAuditSearchResult>) => {
             this.resultList = resultArray;
-        },
-        error => console.log("Error :: " + error)
+        }
       );
 
     this.filterService.upToDateSearchResultsTitle
@@ -32,8 +31,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     .subscribe(
       (title) =>{
         this.resultTypeTitle = title;
-      } ,
-      error => console.log("Error :: " + error)
+      }
     );
   }
 

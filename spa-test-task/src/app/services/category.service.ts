@@ -5,7 +5,6 @@ import "rxjs/add/observable/of";
 import 'rxjs/add/operator/map';
 
 import { UserService } from './user.service';
-import { ApiCallService } from './api-call.service';
 import { Category } from '../models/category';
 import { AttributeType } from '../models/attribute-type';
 import { CategoriesListRequestPayload } from '../models/categories-list-request-payload';
@@ -14,7 +13,6 @@ import { CategoriesListRequestPayload } from '../models/categories-list-request-
 export class CategoryService {
 
   constructor(private http: HttpClient,
-    private apiService: ApiCallService,
     private userService: UserService) { }
 
     public getCategories(): Observable<Array<Category>> {
@@ -30,7 +28,7 @@ export class CategoryService {
         body.LoadAttributes = true;
         body.CategoryId = 0;
 
-        return this.apiService.makePostCall<Category[]>("Category", body);
+        return this.http.post<Category[]>("Category", body);
     }
 
 }

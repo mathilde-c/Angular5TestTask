@@ -6,7 +6,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule, MatInputModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
@@ -14,13 +14,16 @@ import { DatesFilterComponent } from './components/dates-filter/dates-filter.com
 import { ClearFilterComponent } from './components/clear-filter/clear-filter.component';
 import { CategoryAttributeFilterComponent } from './components/category-attribute-filter/category-attribute-filter.component';
 import { CategoryFilterComponent } from './components/category-filter/category-filter.component';
+import { FiltersComponent } from './components/filters/filters.component';
+import { SearchResultComponent } from './components/search-result/search-result.component';
+
 import { UserService } from './services/user.service';
 import { CategoryService } from './services/category.service';
 import { FilterService } from './services/filter.service';
+import { HeaderInterceptor } from './services/header-interceptor.service';
+import { BaseUriInterceptor } from './services/base-uri-interceptor.service';
+
 import { AttributesFilterContainerDirective } from './tools/attributes-filter-container.directive';
-import { FiltersComponent } from './components/filters/filters.component';
-import { ApiCallService } from './services/api-call.service';
-import { SearchResultComponent } from './components/search-result/search-result.component';
 
 
 @NgModule({
@@ -46,13 +49,14 @@ import { SearchResultComponent } from './components/search-result/search-result.
     HttpClientModule
   ],
   providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: BaseUriInterceptor, multi: true},
     {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
     {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     UserService,
     CategoryService,
-    FilterService, 
-    ApiCallService
+    FilterService
   ],
   entryComponents: [CategoryAttributeFilterComponent],
   bootstrap: [AppComponent]

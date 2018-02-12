@@ -5,7 +5,6 @@ import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { UserService } from './user.service';
-import { ApiCallService } from './api-call.service';
 import { CategoryCompletedAuditSearchResultList } from '../models/category-completed-audit-search-result-list';
 import { CategoriesCompletedAuditListRequestPayload } from '../models/categories-completed-audit-list-request-payload';
 import { CategoryCompletedAuditSearchResult } from '../models/category-completed-audit-search-result';
@@ -29,7 +28,6 @@ export class FilterService {
     public upToDateSearchResultsTitle: BehaviorSubject<string> = new  BehaviorSubject<string>('');
 
     constructor(private http: HttpClient,
-        private apiService: ApiCallService,
     private userService: UserService) { }
 
     public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<ItemCompletedAuditSearchResultList> {
@@ -51,7 +49,7 @@ export class FilterService {
         body.SelectedAttributes = this.getSelectAttributesFilterWithValueId();
         body.UserId = this.userService.getUserId();
 
-        return this.apiService.makePostCall<AttributeCompletedAuditSearchResultList>("CompletedAudits", body)
+        return this.http.post<AttributeCompletedAuditSearchResultList>("CompletedAudits", body)
         .takeUntil(stopSearch)
         .map(list => {
             let mappedArry: AttributeCompletedAuditSearchResult[]= list.Items.map(x => 
@@ -107,7 +105,7 @@ export class FilterService {
         body.StartMillis = this.datesFilter.fromMilliSec;
         body.EndMillis = this.datesFilter.toMilliSec;
 
-        return this.apiService.makePostCall<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
+        return this.http.post<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
                 .takeUntil(stopSearch)
                 .map(list => {
                     let mappedArry: CategoryCompletedAuditSearchResult[]= list.Items.map(x => 
