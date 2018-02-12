@@ -48,6 +48,8 @@ export class FilterService {
         body.GroupByAttributeTypeId = this.getGroupingAttributeTypeId();
         body.SelectedAttributes = this.getSelectAttributesFilterWithValueId();
         body.UserId = this.userService.getUserId();
+        
+        let attriubutesFilterRequested = this.selectedAttributes;
 
         return this.http.post<AttributeCompletedAuditSearchResultList>("CompletedAudits", body)
         .takeUntil(stopSearch)
@@ -64,7 +66,10 @@ export class FilterService {
                 return item;
             })
             this.upToDateSearchResults.next(mappedArry);
-            this.upToDateSearchResultsTitle.next(this.currentCategory.Name);
+            let groupingAttribute: SelectedAttributeFilter = attriubutesFilterRequested.find(el => el.TypeId === body.GroupByAttributeTypeId);
+            if (groupingAttribute != null){
+                this.upToDateSearchResultsTitle.next(groupingAttribute.TypeName);
+            }
 
             let resultList: AttributeCompletedAuditSearchResultList = new AttributeCompletedAuditSearchResultList();
             resultList.Items = mappedArry;

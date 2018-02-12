@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 
 import { FilterService } from '../../services/filter.service';
 import { ItemCompletedAuditSearchResult } from '../../models/item-completed-audit-search-result';
@@ -11,8 +12,14 @@ import { Subject } from 'rxjs/Subject';
 })
 export class SearchResultComponent implements OnInit, OnDestroy {
 
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   public resultList: Array<ItemCompletedAuditSearchResult> = [];
   public resultTypeTitle: string = "";
+
+  public displayedColumns = ['nameCat', 'completedAudits'];
+  public dataSource: MatTableDataSource<ItemCompletedAuditSearchResult>;
+
   private unsuscrieAll: Subject<boolean> = new Subject<boolean>();
 
   constructor(private filterService: FilterService) { }
@@ -23,6 +30,8 @@ export class SearchResultComponent implements OnInit, OnDestroy {
       .subscribe(
         (resultArray: Array<ItemCompletedAuditSearchResult>) => {
             this.resultList = resultArray;
+            this.dataSource = new MatTableDataSource<ItemCompletedAuditSearchResult>(this.resultList);
+            this.dataSource.paginator = this.paginator;
         }
       );
 

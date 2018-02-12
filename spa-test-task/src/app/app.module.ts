@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule, MatInputModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
@@ -45,6 +46,10 @@ import { AttributesFilterContainerDirective } from './tools/attributes-filter-co
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
     FormsModule,
     HttpClientModule
   ],
