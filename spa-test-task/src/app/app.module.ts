@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule, MatInputModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS, MatTooltipModule } from '@angular/material';
 import { MatMomentDateModule, MomentDateAdapter, MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -46,6 +46,7 @@ import { AttributesFilterContainerDirective } from './tools/attributes-filter-co
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTooltipModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatPaginatorModule,

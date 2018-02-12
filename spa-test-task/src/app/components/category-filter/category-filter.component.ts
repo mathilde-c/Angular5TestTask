@@ -297,7 +297,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   private updatefilteringServiceAttributeFilters() {
     let attrFilters: Array<SelectedAttributeFilter> =[];
     this.hashAttributeFilterComponents.forEach((comp, key) => {
-      let selectedAttribute: SelectedAttributeFilter = new SelectedAttributeFilter(key, comp.instance.selectedTypeId, comp.instance.selectedValueId);
+      let selectedAttribute: SelectedAttributeFilter = new SelectedAttributeFilter(key, comp.instance.selectedTypeId, comp.instance.selectedValueId, comp.instance.selectedTypeName);
       attrFilters.push(selectedAttribute);
     });
 

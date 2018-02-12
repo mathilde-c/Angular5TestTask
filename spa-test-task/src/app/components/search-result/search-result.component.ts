@@ -17,7 +17,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   public resultList: Array<ItemCompletedAuditSearchResult> = [];
   public resultTypeTitle: string = "";
 
-  public displayedColumns = ['nameCat', 'completedAudits'];
+  public displayedColumns = ['nameCat', 'completedAudits', 'graph'];
   public dataSource: MatTableDataSource<ItemCompletedAuditSearchResult>;
 
   private unsuscrieAll: Subject<boolean> = new Subject<boolean>();
@@ -47,6 +47,13 @@ export class SearchResultComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.unsuscrieAll.next(true);
     this.unsuscrieAll.unsubscribe();
+  }
+
+  public getPassRate(result: ItemCompletedAuditSearchResult): number {
+    return (result.PassedAuditCount / result.CompletedAuditCount) * 100.0;
+  }
+  public getFailRate(result: ItemCompletedAuditSearchResult): number {
+    return (result.FailedAuditCount / result.CompletedAuditCount) * 100.0;
   }
 
 }

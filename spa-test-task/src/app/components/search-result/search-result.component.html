@@ -15,15 +15,27 @@
     </ng-container>
 
     <ng-container matColumnDef="completedAudits">
-      <mat-header-cell *matHeaderCellDef> 
+      <mat-header-cell *matHeaderCellDef class="align-right right-margin"> 
         <span> Completed Audits </span>
       </mat-header-cell>
-      <mat-cell class="mat-cell-value" *matCellDef="let searchResult"> 
+      <mat-cell class="mat-cell-value align-right right-margin" *matCellDef="let searchResult"> 
         <span class="mat-cell-name-value"> 
           {{searchResult.CompletedAuditCount}} 
         </span> 
       </mat-cell>
     </ng-container>
+
+
+    <ng-container matColumnDef="graph">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let searchResult"> 
+            <span class="mat-cell-value graph-container" matTooltip="Passed: {{searchResult.PassedAuditCount}}&#13;Failed: {{searchResult.FailedAuditCount}}" [matTooltipClass]="'multiline-tooltip'" matTooltipPosition="right"> 
+              <div class="pass" [style.width.%]="getPassRate(searchResult)">
+              </div><!-- remove white space 
+              --><div class="fail" [style.width.%]="getFailRate(searchResult)"></div>
+            </span> 
+        </mat-cell>
+      </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
