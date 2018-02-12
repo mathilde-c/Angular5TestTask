@@ -18,6 +18,8 @@ import { UserService } from './services/user.service';
 import { CategoryService } from './services/category.service';
 import { FilterService } from './services/filter.service';
 import { AttributesFilterContainerDirective } from './tools/attributes-filter-container.directive';
+import { FiltersComponent } from './components/filters/filters.component';
+import { ApiCallService } from './services/api-call.service';
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { AttributesFilterContainerDirective } from './tools/attributes-filter-co
     ClearFilterComponent,
     CategoryAttributeFilterComponent,
     CategoryFilterComponent,
-    AttributesFilterContainerDirective
+    AttributesFilterContainerDirective,
+    FiltersComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { AttributesFilterContainerDirective } from './tools/attributes-filter-co
     {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
     UserService,
     CategoryService,
-    FilterService
+    FilterService, 
+    ApiCallService
   ],
   entryComponents: [CategoryAttributeFilterComponent],
   bootstrap: [AppComponent]

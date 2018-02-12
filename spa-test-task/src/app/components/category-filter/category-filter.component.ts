@@ -36,7 +36,9 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
 
   constructor(private filteringService: FilterService,
               private categoryService: CategoryService,
-              private componentFactoryResolver: ComponentFactoryResolver) { }
+              private componentFactoryResolver: ComponentFactoryResolver) 
+  { }
+
 
   ngOnInit() {
     this.initializeAllCategoriesCat();
@@ -139,8 +141,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       (selectedAttribute: SelectedAttribute) => {
         console.log("selected attribute change!! : " + selectedAttribute);
         this.setSelectedAttribute(selectedAttribute.typeId, null, selectedAttribute.attributeId, selectedAttribute.attributeFilterId);
-
-        // trigger search
+        this.startSearch();
       }
     );
 
@@ -251,7 +252,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       this.clearAttributeFilterComponents();
     }
     
-    // trigger search
+    this.startSearch()
   }
 
   private updatefilteringServiceAttributeFilters() {

@@ -13,7 +13,7 @@ export class DatesFilterComponent implements OnInit {
   public set from (val) {
     if (this.fromDateValue != val){
       this.fromDateValue = val;
-      this.notifyDatesChanges.emit(new DatesFilter(this.fromDateValue, this.toDateValue));
+      this.emitDatesValues();
     }
   }
 
@@ -21,7 +21,7 @@ export class DatesFilterComponent implements OnInit {
   public set to (val) {
     if (this.toDateValue != val){
       this.toDateValue = val;
-      this.notifyDatesChanges.emit(new DatesFilter(this.fromDateValue, this.toDateValue));
+      this.emitDatesValues();
     }
   }
 
@@ -34,6 +34,7 @@ export class DatesFilterComponent implements OnInit {
 
     this.fromDateValue = this.computerStartDate(new Date(Date.now()));
     this.toDateValue =  this.computerEndDate(this.fromDateValue);
+      this.emitDatesValues();
   }
 
   private computerEndDate(startDate: Date): Date {
@@ -50,4 +51,7 @@ export class DatesFilterComponent implements OnInit {
     return new Date(year, month, 1);
   }
 
+  private emitDatesValues() {
+      this.notifyDatesChanges.emit(new DatesFilter(this.fromDateValue, this.toDateValue));
+  }
 }
