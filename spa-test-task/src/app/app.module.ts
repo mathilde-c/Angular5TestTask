@@ -20,6 +20,7 @@ import { FilterService } from './services/filter.service';
 import { AttributesFilterContainerDirective } from './tools/attributes-filter-container.directive';
 import { FiltersComponent } from './components/filters/filters.component';
 import { ApiCallService } from './services/api-call.service';
+import { SearchResultComponent } from './components/search-result/search-result.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ApiCallService } from './services/api-call.service';
     CategoryAttributeFilterComponent,
     CategoryFilterComponent,
     AttributesFilterContainerDirective,
-    FiltersComponent
+    FiltersComponent,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import { ApiCallService } from './api-call.service';
 import { CategoryCompletedAuditSearchResultList } from '../models/category-completed-audit-search-result-list';
 import { CategoriesCompletedAuditListRequestPayload } from '../models/categories-completed-audit-list-request-payload';
 import { CategoryCompletedAuditSearchResult } from '../models/category-completed-audit-search-result';
+import { ItemCompletedAuditSearchResult } from '../models/item-completed-audit-search-result';
 
 @Injectable()
 export class FilterService {
@@ -19,7 +20,7 @@ export class FilterService {
     private currentCategoryId: number = null;
     private selectedAttributes: Array<SelectedAttribute> = [];
     private datesFilter: DatesFilter = null;
-    public upToDateSearchResult: BehaviorSubject<Array<CategoryCompletedAuditSearchResult>> = new  BehaviorSubject<Array<CategoryCompletedAuditSearchResult>>([]);
+    public upToDateSearchResults: BehaviorSubject<Array<ItemCompletedAuditSearchResult>> = new  BehaviorSubject<Array<ItemCompletedAuditSearchResult>>([]);
 
     constructor(private http: HttpClient,
         private apiService: ApiCallService,
@@ -60,6 +61,13 @@ export class FilterService {
         return this.apiService.makePostCall<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
                 .takeUntil(stopSearch)
                 .map(list => {
+                    let mappedArry: ItemCompletedAuditSearchResult[]= list.Items.map(x => 
+                        {
+                            let item: ItemCompletedAuditSearchResult = new ItemCompletedAuditSearchResult();
+                            item.setFromCategoryCompletedAuditresultObject(x)
+                            return item;
+                        })
+                    this.upToDateSearchResults.next(mappedArry);
                     return list.Items;
                 });
     }
