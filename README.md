@@ -14,6 +14,7 @@ For instance, the data required to fill the available values for attribute filte
 * Component based approach:
   * Components are identified and created first with a very limited, single-responsability scope.
   * Reusability maximization in mind.
+  * Use of services to share information between components.
 * Clean code:
   * Simplistic approach, keeping html, css, and ts files as consive, human readble.
   * Avoid redundancy.
