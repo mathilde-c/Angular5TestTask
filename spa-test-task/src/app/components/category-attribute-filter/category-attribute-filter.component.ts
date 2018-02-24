@@ -1,29 +1,29 @@
-import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnDestroy } from "@angular/core";
 
-import { AttributeType } from '../../models/attribute-type';
-import { AttributeValue } from '../../models/attribute-value';
-import { SelectedAttributeFilter } from '../../models/selected-attribute-filter';
+import { AttributeType } from "../../models/attribute-type";
+import { AttributeValue } from "../../models/attribute-value";
+import { SelectedAttributeFilter } from "../../models/selected-attribute-filter";
 
 @Component({
-  selector: 'app-category-attribute-filter',
-  templateUrl: './category-attribute-filter.component.html',
-  styleUrls: ['./category-attribute-filter.component.css']
+  selector: "app-category-attribute-filter",
+  templateUrl: "./category-attribute-filter.component.html",
+  styleUrls: ["./category-attribute-filter.component.css"]
 })
 export class CategoryAttributeFilterComponent implements OnInit {
-  @Input() attributeTypesList: Array<AttributeType>;
-  @Input() attributeValuesList: Array<AttributeValue>;
-  @Input() defaultSelectedAttributeTypeId: number; 
+  @Input() public attributeTypesList: Array<AttributeType>;
+  @Input() public attributeValuesList: Array<AttributeValue>;
+  @Input() public defaultSelectedAttributeTypeId: number;
 
-  @Output() onFiltersUpdated: EventEmitter<SelectedAttributeFilter> = new EventEmitter<SelectedAttributeFilter>();
+  @Output() public onFiltersUpdated: EventEmitter<SelectedAttributeFilter> = new EventEmitter<SelectedAttributeFilter>();
 
   public id: number = null;
 
   public get selectedTypeId(): number { return this.selectedTypeIdValue; }
   public get selectedValueId(): number { return this.selectedValueIdValue; }
 
-  public selectedTypeName = "";
-  
-  public set selectedTypeId (val) { 
+  public selectedTypeName: string = "";
+
+  public set selectedTypeId (val) {
     this.selectedTypeIdValue = val;
     this.selectedTypeName = this.retriveSelectedTypeName();
     this.selectedValueIdValue = null;
@@ -38,14 +38,19 @@ export class CategoryAttributeFilterComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    this.selectedTypeIdValue = this.defaultSelectedAttributeTypeId ? this.defaultSelectedAttributeTypeId : this.attributeTypesList[0].TypeId;
+  public ngOnInit(): void {
+    this.selectedTypeIdValue = this.defaultSelectedAttributeTypeId
+      ? this.defaultSelectedAttributeTypeId
+      : this.attributeTypesList[0].TypeId;
+
     this.selectedTypeName = this.retriveSelectedTypeName();
-    this.selectedValueIdValue = (this.attributeValuesList && this.attributeValuesList.length > 0) ? this.attributeValuesList[0].AttributeId : null;
+    this.selectedValueIdValue = (this.attributeValuesList && this.attributeValuesList.length > 0)
+      ? this.attributeValuesList[0].AttributeId
+      : null;
   }
 
   private EmitSelectAttributes(): void {
-    let selectedOptions = new SelectedAttributeFilter(this.id, this.selectedTypeId, this.selectedValueIdValue, this.selectedTypeName);
+    const selectedOptions = new SelectedAttributeFilter(this.id, this.selectedTypeId, this.selectedValueIdValue, this.selectedTypeName);
 
     this.onFiltersUpdated.emit(selectedOptions);
   }

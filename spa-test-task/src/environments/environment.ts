@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://incontrolpty.australiaeast.cloudapp.azure.com:7123/WebServices/api'
+  apiUrl: "http://incontrolpty.australiaeast.cloudapp.azure.com:7123/WebServices/api"
 };

@@ -1,23 +1,23 @@
-import { ItemCompletedAuditSearchResult } from "./item-completed-audit-search-result";
+import { IItemCompletedAuditSearchResult } from "./item-completed-audit-search-result";
 
-export class AttributeCompletedAuditSearchResult implements ItemCompletedAuditSearchResult {
-    setId(val: number): void {
+export class AttributeCompletedAuditSearchResult implements IItemCompletedAuditSearchResult {
+    public FailedAuditCount: number;
+    public CompletedAuditCount: number;
+    public PassedAuditCount: number;
+    public AttributeId: number;
+    public AttributeName: string;
+    public Id: number;
+
+    public setId(val: number): void {
         this.AttributeId = val;
     }
-    setName(val: string): void {
+    public setName(val: string): void {
         this.AttributeName = val;
     }
-    getId(): number {
+    public getId(): number {
         return this.AttributeId;
     }
-    getName(): string {
+    public getName(): string {
         return this.AttributeName;
     }
-
-    FailedAuditCount: number;
-    CompletedAuditCount: number;
-    PassedAuditCount: number;
-    AttributeId: number;
-    AttributeName: string;
-    Id: number;
 }

@@ -1,5 +1,5 @@
 export class AttributeType {
-    TypeId: number;
-    Name: string;
-    DisplayOrder: number;
+    public TypeId: number;
+    public Name: string;
+    public DisplayOrder: number;
 }

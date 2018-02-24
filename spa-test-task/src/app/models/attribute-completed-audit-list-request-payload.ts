@@ -1,14 +1,10 @@
-import { SelectedAttributePayload } from "./selected-attribute-payload";
+import { ISelectedAttributePayload } from "./selected-attribute-payload";
 
 export class AttributeCompletedAuditListRequestPayload {
-    UserId: number;
-    EndMillis:number;
-    StartMillis:number;
-    CategoryId: number;
-    GroupByAttributeTypeId: number;
-    SelectedAttributes: SelectedAttributePayload[];
-    
-    constructor() {
-        
-    }
+    public UserId: number;
+    public EndMillis: number;
+    public StartMillis: number;
+    public CategoryId: number;
+    public GroupByAttributeTypeId: number;
+    public SelectedAttributes: ISelectedAttributePayload[];
 }

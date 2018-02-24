@@ -1,39 +1,40 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
-import { UserService } from './user.service';
-import { CategoryCompletedAuditSearchResultList } from '../models/category-completed-audit-search-result-list';
-import { CategoriesCompletedAuditListRequestPayload } from '../models/categories-completed-audit-list-request-payload';
-import { CategoryCompletedAuditSearchResult } from '../models/category-completed-audit-search-result';
-import { ItemCompletedAuditSearchResult } from '../models/item-completed-audit-search-result';
-import { AttributeCompletedAuditSearchResult } from '../models/attribute-completed-audit-search-result';
-import { AttributeCompletedAuditSearchResultList } from '../models/attribute-completed-audit-search-result-list';
-import { Category } from '../models/category';
-import { SelectedAttributeFilter } from '../models/selected-attribute-filter';
-import { DatesFilter } from '../models/dates-filter';
-import { AttributeCompletedAuditListRequestPayload } from '../models/attribute-completed-audit-list-request-payload';
-import { SelectedAttributePayload } from '../models/selected-attribute-payload';
-import { ItemCompletedAuditSearchResultList } from '../models/item-completed-audit-search-result-list';
+import { UserService } from "./user.service";
+import { CategoryCompletedAuditSearchResultList } from "../models/category-completed-audit-search-result-list";
+import { CategoriesCompletedAuditListRequestPayload } from "../models/categories-completed-audit-list-request-payload";
+import { CategoryCompletedAuditSearchResult } from "../models/category-completed-audit-search-result";
+import { IItemCompletedAuditSearchResult } from "../models/item-completed-audit-search-result";
+import { AttributeCompletedAuditSearchResult } from "../models/attribute-completed-audit-search-result";
+import { AttributeCompletedAuditSearchResultList } from "../models/attribute-completed-audit-search-result-list";
+import { ICategory } from "../models/category";
+import { SelectedAttributeFilter } from "../models/selected-attribute-filter";
+import { DatesFilter } from "../models/dates-filter";
+import { AttributeCompletedAuditListRequestPayload } from "../models/attribute-completed-audit-list-request-payload";
+import { ISelectedAttributePayload } from "../models/selected-attribute-payload";
+import { IItemCompletedAuditSearchResultList } from "../models/item-completed-audit-search-result-list";
 
 @Injectable()
 export class FilterService {
 
-    private currentCategory: Category = null;
+    private currentCategory: ICategory = null;
     private selectedAttributes: Array<SelectedAttributeFilter> = [];
     private datesFilter: DatesFilter = null;
-    public upToDateSearchResults: BehaviorSubject<Array<ItemCompletedAuditSearchResult>> = new  BehaviorSubject<Array<ItemCompletedAuditSearchResult>>([]);
-    public upToDateSearchResultsTitle: BehaviorSubject<string> = new  BehaviorSubject<string>('');
+    public upToDateSearchResults: BehaviorSubject<Array<IItemCompletedAuditSearchResult>>
+        = new  BehaviorSubject<Array<IItemCompletedAuditSearchResult>>([]);
+    public upToDateSearchResultsTitle: BehaviorSubject<string> = new  BehaviorSubject<string>("");
 
     constructor(private http: HttpClient,
     private userService: UserService) { }
 
-    public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<ItemCompletedAuditSearchResultList> {
+    public searchCompletedAudits(stopSearch: Subject<boolean>): Observable<IItemCompletedAuditSearchResultList> {
 
         if (this.currentCategory != null
-            && this.currentCategory.CategoryId != null){
+            && this.currentCategory.CategoryId != null) {
             return this.AuditOnSpecificCategory(stopSearch);
         } else {
             return this.AuditOnAllCategories(stopSearch);
@@ -41,22 +42,21 @@ export class FilterService {
     }
 
     private AuditOnSpecificCategory(stopSearch: Subject<boolean>): Observable<AttributeCompletedAuditSearchResultList> {
-        let body: AttributeCompletedAuditListRequestPayload = new AttributeCompletedAuditListRequestPayload();
+        const body: AttributeCompletedAuditListRequestPayload = new AttributeCompletedAuditListRequestPayload();
         body.CategoryId = this.currentCategory.CategoryId;
         body.StartMillis = this.datesFilter.fromMilliSec;
         body.EndMillis = this.datesFilter.toMilliSec;
         body.GroupByAttributeTypeId = this.getGroupingAttributeTypeId();
         body.SelectedAttributes = this.getSelectAttributesFilterWithValueId();
         body.UserId = this.userService.getUserId();
-        
-        let attriubutesFilterRequested = this.selectedAttributes;
+
+        const attriubutesFilterRequested = this.selectedAttributes;
 
         return this.http.post<AttributeCompletedAuditSearchResultList>("CompletedAudits", body)
         .takeUntil(stopSearch)
         .map(list => {
-            let mappedArry: AttributeCompletedAuditSearchResult[]= list.Items.map(x => 
-            {
-                let item: AttributeCompletedAuditSearchResult = new AttributeCompletedAuditSearchResult();
+            const mappedArry: AttributeCompletedAuditSearchResult[] = list.Items.map(x => {
+                const item: AttributeCompletedAuditSearchResult = new AttributeCompletedAuditSearchResult();
                 item.AttributeId = x.AttributeId;
                 item.AttributeName = x.AttributeName;
                 item.CompletedAuditCount = x.CompletedAuditCount;
@@ -64,14 +64,17 @@ export class FilterService {
                 item.PassedAuditCount = x.PassedAuditCount;
 
                 return item;
-            })
+            });
+
             this.upToDateSearchResults.next(mappedArry);
-            let groupingAttribute: SelectedAttributeFilter = attriubutesFilterRequested.find(el => el.TypeId === body.GroupByAttributeTypeId);
-            if (groupingAttribute != null){
+            const groupingAttribute: SelectedAttributeFilter
+                = attriubutesFilterRequested.find(el => el.TypeId === body.GroupByAttributeTypeId);
+
+            if (groupingAttribute != null) {
                 this.upToDateSearchResultsTitle.next(groupingAttribute.TypeName);
             }
 
-            let resultList: AttributeCompletedAuditSearchResultList = new AttributeCompletedAuditSearchResultList();
+            const resultList: AttributeCompletedAuditSearchResultList = new AttributeCompletedAuditSearchResultList();
             resultList.Items = mappedArry;
             resultList.TotalAuditCount = list.TotalAuditCount;
             resultList.TotalFailedAuditCount = list.TotalFailedAuditCount;
@@ -81,31 +84,30 @@ export class FilterService {
         });
     }
     private getGroupingAttributeTypeId(): number {
-        return this.selectedAttributes[this.selectedAttributes.length-1].TypeId;
+        return this.selectedAttributes[this.selectedAttributes.length - 1].TypeId;
     }
 
-    private getSelectAttributesFilterWithValueId(): SelectedAttributePayload[] {
-        let attributes: SelectedAttributePayload[] = this.selectedAttributes.map(attr =>
-            {
-                let payload: SelectedAttributePayload = {
-                    TypeId: attr.TypeId,
-                    AttributeId: attr.AttributeId
-                }
-                return payload;
-            });
+    private getSelectAttributesFilterWithValueId(): ISelectedAttributePayload[] {
+        const attributes: ISelectedAttributePayload[] = this.selectedAttributes.map(attr => {
+            const payload: ISelectedAttributePayload = {
+                TypeId: attr.TypeId,
+                AttributeId: attr.AttributeId
+            };
+            return payload;
+        });
 
         if (!this.hasLastAttributeFilterValue(attributes)) {
             attributes.pop();
         }
         return attributes;
     }
-    private hasLastAttributeFilterValue(attributes: SelectedAttributePayload[]): any {
-        return attributes[attributes.length-1].AttributeId !== null 
-                && typeof(attributes[attributes.length-1].AttributeId) !== 'undefined';
+    private hasLastAttributeFilterValue(attributes: ISelectedAttributePayload[]): any {
+        return attributes[attributes.length - 1].AttributeId !== null
+                && typeof(attributes[attributes.length - 1].AttributeId) !== "undefined";
     }
 
     private AuditOnAllCategories(stopSearch: Subject<boolean>): Observable<CategoryCompletedAuditSearchResultList> {
-        let body: CategoriesCompletedAuditListRequestPayload = new CategoriesCompletedAuditListRequestPayload();
+        const body: CategoriesCompletedAuditListRequestPayload = new CategoriesCompletedAuditListRequestPayload();
         body.UserId = this.userService.getUserId();
         body.StartMillis = this.datesFilter.fromMilliSec;
         body.EndMillis = this.datesFilter.toMilliSec;
@@ -113,9 +115,8 @@ export class FilterService {
         return this.http.post<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
                 .takeUntil(stopSearch)
                 .map(list => {
-                    let mappedArry: CategoryCompletedAuditSearchResult[]= list.Items.map(x => 
-                    {
-                        let item: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
+                    const mappedArry: CategoryCompletedAuditSearchResult[] = list.Items.map(x => {
+                        const item: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
                         item.CategoryId = x.CategoryId;
                         item.CategoryName = x.CategoryName;
                         item.CompletedAuditCount = x.CompletedAuditCount;
@@ -123,14 +124,15 @@ export class FilterService {
                         item.PassedAuditCount = x.PassedAuditCount;
 
                         return item;
-                    })
+                    });
+
                     this.upToDateSearchResults.next(mappedArry);
                     this.upToDateSearchResultsTitle.next("Category");
                     return list;
                 });
     }
 
-    public setCategory(newCategory: Category): void {
+    public setCategory(newCategory: ICategory): void {
         this.currentCategory = newCategory;
     }
 

@@ -1,7 +1,7 @@
 import { AttributeValue } from "./attribute-value";
 
 export class AttributeValueScore extends AttributeValue {
-    PassedPoints: number;
-    FailedPoints: number;
-    Score: number;
+    public PassedPoints: number;
+    public FailedPoints: number;
+    public Score: number;
 }

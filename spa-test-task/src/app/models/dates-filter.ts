@@ -1,6 +1,6 @@
 export class DatesFilter {
-    fromMilliSec: number;
-    toMilliSec: number;
+    public fromMilliSec: number;
+    public toMilliSec: number;
 
     constructor(from: number, to: number) {
         this.fromMilliSec = from;

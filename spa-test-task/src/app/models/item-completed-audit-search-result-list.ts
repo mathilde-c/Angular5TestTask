@@ -1,9 +1,10 @@
-import { ItemCompletedAuditSearchResult } from "./item-completed-audit-search-result";
+import { IItemCompletedAuditSearchResult } from "./item-completed-audit-search-result";
 
 
-export interface ItemCompletedAuditSearchResultList {
-    getItems(): Array<ItemCompletedAuditSearchResult>;
+export interface IItemCompletedAuditSearchResultList {
     TotalAuditCount: number;
     TotalFailedAuditCount: number;
     TotalPassedAuditCount: number;
+
+    getItems(): Array<IItemCompletedAuditSearchResult>;
 }

@@ -1,5 +1,5 @@
 export class CategoriesListRequestPayload {
-    UserId: number;
-    CategoryId: number;
-    LoadAttributes: boolean;
+    public UserId: number;
+    public CategoryId: number;
+    public LoadAttributes: boolean;
 }

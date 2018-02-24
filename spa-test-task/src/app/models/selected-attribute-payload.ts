@@ -1,4 +1,4 @@
-export interface SelectedAttributePayload {
+export interface ISelectedAttributePayload {
     TypeId: number;
     AttributeId: number;
 }

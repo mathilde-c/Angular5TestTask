@@ -1,56 +1,55 @@
-import { Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewContainerRef, ViewChild, ComponentRef, Input } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Component, OnInit, OnDestroy, ComponentFactoryResolver, ViewContainerRef, ViewChild, ComponentRef, Input } from "@angular/core";
+import { Subject } from "rxjs/Subject";
+import "rxjs/add/operator/takeUntil";
 
-import { CategoryService } from '../../services/category.service';
-import { FilterService } from '../../services/filter.service';
-import { AttributesFilterContainerDirective } from '../../tools/attributes-filter-container.directive';
-import { SelectedAttributeFilter } from '../../models/selected-attribute-filter' ;
-import { Category } from '../../models/category';
-import { CategoryAttributeFilterComponent } from '../category-attribute-filter/category-attribute-filter.component';
-import { AttributeType } from '../../models/attribute-type';
-import { AttributeValue } from '../../models/attribute-value';
-import { AttributeCompletedAuditSearchResultList } from '../../models/attribute-completed-audit-search-result-list';
-import { ItemCompletedAuditSearchResultList } from '../../models/item-completed-audit-search-result-list';
-import { AttributeCompletedAuditSearchResult } from '../../models/attribute-completed-audit-search-result';
-import { ItemCompletedAuditSearchResult } from '../../models/item-completed-audit-search-result';
+import { CategoryService } from "../../services/category.service";
+import { FilterService } from "../../services/filter.service";
+import { AttributesFilterContainerDirective } from "../../tools/attributes-filter-container.directive";
+import { SelectedAttributeFilter } from "../../models/selected-attribute-filter" ;
+import { ICategory } from "../../models/category";
+import { CategoryAttributeFilterComponent } from "../category-attribute-filter/category-attribute-filter.component";
+import { AttributeType } from "../../models/attribute-type";
+import { AttributeValue } from "../../models/attribute-value";
+import { AttributeCompletedAuditSearchResultList } from "../../models/attribute-completed-audit-search-result-list";
+import { IItemCompletedAuditSearchResultList } from "../../models/item-completed-audit-search-result-list";
+import { AttributeCompletedAuditSearchResult } from "../../models/attribute-completed-audit-search-result";
+import { IItemCompletedAuditSearchResult } from "../../models/item-completed-audit-search-result";
 
 @Component({
-  selector: 'app-category-filter',
-  templateUrl: './category-filter.component.html',
-  styleUrls: ['./category-filter.component.css']
+  selector: "app-category-filter",
+  templateUrl: "./category-filter.component.html",
+  styleUrls: ["./category-filter.component.css"]
 })
 export class CategoryFilterComponent implements OnInit, OnDestroy {
-  @Input() stopSearch: Subject<boolean>;
-  @ViewChild(AttributesFilterContainerDirective) attributeContainer: AttributesFilterContainerDirective;
+  @Input() public stopSearch: Subject<boolean>;
+  @ViewChild(AttributesFilterContainerDirective) public attributeContainer: AttributesFilterContainerDirective;
 
-  public categoryList: Array<Category> = [];
-  private allCategoriesCat: Category;
+  public categoryList: Array<ICategory> = [];
+  private allCategoriesCat: ICategory;
   public get selectedCategory() { return this.selectedCategoryValue; }
-  public set selectedCategory(val) { 
+  public set selectedCategory(val) {
     this.selectedCategoryValue = val;
-    this.filteringService.setCategory(val); 
+    this.filteringService.setCategory(val);
   }
-  
-  private selectedCategoryValue: Category;
 
-  private hashAttributeFilterComponents = new Map<number, ComponentRef<CategoryAttributeFilterComponent>>(); 
+  private selectedCategoryValue: ICategory;
+
+  private hashAttributeFilterComponents = new Map<number, ComponentRef<CategoryAttributeFilterComponent>>();
 
   private unsuscribeAll: Subject<boolean> = new Subject<boolean>();
 
   constructor(private filteringService: FilterService,
               private categoryService: CategoryService,
-              private componentFactoryResolver: ComponentFactoryResolver) 
-  { }
+              private componentFactoryResolver: ComponentFactoryResolver) { }
 
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.initializeAllCategoriesCat();
     this.InitializeCategories();
 
     this.selectedCategory = this.allCategoriesCat;
   }
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.unsuscribeAll.next(true);
     this.unsuscribeAll.unsubscribe();
   }
@@ -58,13 +57,13 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   private InitializeCategories(): void {
     this.categoryList.push(this.allCategoriesCat);
 
-    let listOfCategoryFomServer: Array<Category> = [];
+    const listOfCategoryFomServer: Array<ICategory> = [];
     this.categoryService.getCategories()
       .takeUntil(this.unsuscribeAll)
       .subscribe(
-        (resultArray: Array<Category>) => {
-          let v:Category[] = resultArray.map(c => { let cat: Category = c; return cat; });
-          this.categoryList = this.categoryList.concat(v);
+        (resultArray: Array<ICategory>) => {
+          const resultFromackEnd: ICategory[] = resultArray.map(c => { const cat: ICategory = c; return cat; });
+          this.categoryList = this.categoryList.concat(resultFromackEnd);
         }
       );
   }
@@ -79,45 +78,48 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       };
   }
 
-  public onCategoryChange(newCategory: Category): void {
+  public onCategoryChange(newCategory: ICategory): void {
     this.stopSearch.next(true);
 
     this.clearAttributeFilterComponents();
 
     if (newCategory
-        && newCategory.CategoryId){
+        && newCategory.CategoryId) {
       this.setSelectedAttribute(newCategory.DefaultTypeId, newCategory, null);
-    } 
+    }
 
-      this.startSearch();
+    this.startSearch();
   }
 
   private clearAttributeFilterComponents(): void {
-    let numberOfComponent:number = this.hashAttributeFilterComponents.size;
-    for (let i:number = 0; i < numberOfComponent; i++){
+    const numberOfComponent: number = this.hashAttributeFilterComponents.size;
+    for (let i: number = 0; i < numberOfComponent; i++) {
       this.removeAttributeFilterComponent(i);
     }
 
     this.hashAttributeFilterComponents.clear();
   }
 
-  private setSelectedAttribute(attributeTypeId: number, category: Category, attributeValueId: number, idOfAttributeComponent: number = null){
-    if (!category){
+  private setSelectedAttribute(attributeTypeId: number
+  , category: ICategory
+  , attributeValueId: number
+  , idOfAttributeComponent: number = null): void {
+
+    if (!category) {
       category = this.selectedCategory;
     }
 
-    if (idOfAttributeComponent != null){
-      for(let i:number = this.hashAttributeFilterComponents.size - 1; i > idOfAttributeComponent; i--)
-      {
+    if (idOfAttributeComponent != null) {
+      for (let i: number = this.hashAttributeFilterComponents.size - 1; i > idOfAttributeComponent; i--) {
         this.removeAttributeFilterComponent(i);
       }
 
-      if (attributeValueId != null){
+      if (attributeValueId != null) {
         // trigger create of new level of filtering (new component)
         this.createAttributeFilterComponent(null, this.hashAttributeFilterComponents.size, category);
-      } else{
-        // reinitialize the attributesValues for component 
-        let comp: ComponentRef<CategoryAttributeFilterComponent> = this.hashAttributeFilterComponents.get(idOfAttributeComponent);
+      } else {
+        // reinitialize the attributesValues for component
+        const comp: ComponentRef<CategoryAttributeFilterComponent> = this.hashAttributeFilterComponents.get(idOfAttributeComponent);
         comp.instance.attributeValuesList = this.initializeDefaultAttributValues();
       }
     } else {
@@ -127,8 +129,9 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     this.updatefilteringServiceAttributeFilters();
   }
 
-  private createAttributeFilterComponent(attributeTypeId: number, index: number, category: Category): ComponentRef<CategoryAttributeFilterComponent> {
-    let remainingAttributeTypeFilterUnused = this.getAttributeTypeList(category);
+  private createAttributeFilterComponent(attributeTypeId: number, index: number, category: ICategory)
+  : ComponentRef<CategoryAttributeFilterComponent> {
+    const remainingAttributeTypeFilterUnused = this.getAttributeTypeList(category);
 
     if (remainingAttributeTypeFilterUnused.length === 0) {
       return;
@@ -138,9 +141,10 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       attributeTypeId = remainingAttributeTypeFilterUnused[0].TypeId;
     }
 
-    let categoryAttributeFilterComponent  = this.componentFactoryResolver.resolveComponentFactory(CategoryAttributeFilterComponent);
-    let compRef: ComponentRef<CategoryAttributeFilterComponent> = this.attributeContainer.viewContainerRef.createComponent(categoryAttributeFilterComponent);
-    
+    const categoryAttributeFilterComponent  = this.componentFactoryResolver.resolveComponentFactory(CategoryAttributeFilterComponent);
+    const compRef: ComponentRef<CategoryAttributeFilterComponent> =
+      this.attributeContainer.viewContainerRef.createComponent(categoryAttributeFilterComponent);
+
     compRef.instance.defaultSelectedAttributeTypeId = attributeTypeId;
     compRef.instance.id = index;
     compRef.instance.onFiltersUpdated.subscribe(
@@ -163,19 +167,19 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   }
 
   private initializeDefaultAttributValues(): Array<AttributeValue> {
-    let attrValues: Array<AttributeValue> = [];
+    const attrValues: Array<AttributeValue> = [];
 
-    let all: AttributeValue = new AttributeValue();
+    const all: AttributeValue = new AttributeValue();
 
     all.AttributeId = null;
     all.AttributeName = "All";
     all.Id = -1;
     attrValues.push(all);
-    
+
     return attrValues;
   }
 
-  private removeAttributeFilterComponent(key: number):void {
+  private removeAttributeFilterComponent(key: number): void {
     this.attributeContainer.viewContainerRef.remove(key);
 
     this.hashAttributeFilterComponents.delete(key);
@@ -183,8 +187,8 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       this.updatefilteringServiceAttributeFilters();
   }
 
-  private findAttributeFilterUsable(category: Category): Array<AttributeType>{
-    let typeIdsInUse: Array<number> = []; 
+  private findAttributeFilterUsable(category: ICategory): Array<AttributeType> {
+    const typeIdsInUse: Array<number> = [];
     let highestDisplay: number = -1;
     let zeroDisplayInUse: boolean = false;
 
@@ -196,10 +200,11 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       return [];
     }
 
-    for (let id of typeIdsInUse){
-      let display: number = category.AttributeTypes.find(att => att.TypeId == id).DisplayOrder;
+    // tslint:disable-next-line:prefer-const
+    for (let id of typeIdsInUse) {
+      const display: number = category.AttributeTypes.find(att => att.TypeId === id).DisplayOrder;
       zeroDisplayInUse = zeroDisplayInUse || (display === 0);
-      if (display > highestDisplay){
+      if (display > highestDisplay) {
         highestDisplay = display;
       }
     }
@@ -208,16 +213,17 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       return [];
     }
 
-    let attributeSubSet: Array<AttributeType> = [];
-    if (!zeroDisplayInUse){
-      let attr0: AttributeType = category.AttributeTypes.find(att => att.DisplayOrder === 0);
-      if (attr0){
+    const attributeSubSet: Array<AttributeType> = [];
+    if (!zeroDisplayInUse) {
+      const attr0: AttributeType = category.AttributeTypes.find(att => att.DisplayOrder === 0);
+      if (attr0) {
         attributeSubSet.push(attr0);
       }
     }
 
-    for(let attr of category.AttributeTypes){
-      if (attr.DisplayOrder > highestDisplay){
+    // tslint:disable-next-line:prefer-const
+    for (let attr of category.AttributeTypes) {
+      if (attr.DisplayOrder > highestDisplay) {
         attributeSubSet.push(attr);
       }
     }
@@ -229,14 +235,14 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       this.filteringService.searchCompletedAudits(this.stopSearch)
       .takeUntil(this.stopSearch)
       .subscribe(
-        (resultList: ItemCompletedAuditSearchResultList) => {
-          if (resultList 
+        (resultList: IItemCompletedAuditSearchResultList) => {
+          if (resultList
             && resultList.getItems().length > 0
-            && this.selectedCategory != null){
-            let latestAttributeFilter = this.retriveLatestAttributeFilter();
+            && this.selectedCategory != null) {
+            const latestAttributeFilter = this.retriveLatestAttributeFilter();
 
             if (latestAttributeFilter != null
-              && !this.areLatestAttributeFilterValuesSetFromServer(latestAttributeFilter)){
+              && !this.areLatestAttributeFilterValuesSetFromServer(latestAttributeFilter)) {
               this.updateLatestAttributeFilterValuesSetFromServer(latestAttributeFilter, resultList.getItems());
             }
           }
@@ -245,16 +251,14 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   }
 
   private retriveLatestAttributeFilter(): ComponentRef<CategoryAttributeFilterComponent> {
-    if (this.hashAttributeFilterComponents.size === 0){
+    if (this.hashAttributeFilterComponents.size === 0) {
       return null;
     }
 
     let highestIndex = -1;
-    this.hashAttributeFilterComponents.forEach((comp, key) => 
-                  { 
-                    if (key > highestIndex) 
-                    { 
-                      highestIndex = key 
+    this.hashAttributeFilterComponents.forEach((comp, key) => {
+                    if (key > highestIndex) {
+                      highestIndex = key;
                     }});
 
     return this.hashAttributeFilterComponents.get(highestIndex);
@@ -264,15 +268,14 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
     return latestAttributeFilter.instance.attributeValuesList.length > 1;
   }
   private updateLatestAttributeFilterValuesSetFromServer(latestAttributeFilter: ComponentRef<CategoryAttributeFilterComponent>
-                                                          , results: ItemCompletedAuditSearchResult[]): void {
-    results.forEach(result =>
-      {
-        let attr: AttributeValue = new AttributeValue();
-        attr.AttributeId = result.getId();
-        attr.AttributeName = result.getName();
+                                                          , results: IItemCompletedAuditSearchResult[]): void {
+    results.forEach(result => {
+      const attr: AttributeValue = new AttributeValue();
+      attr.AttributeId = result.getId();
+      attr.AttributeName = result.getName();
 
-        latestAttributeFilter.instance.attributeValuesList.push(attr);
-      });
+      latestAttributeFilter.instance.attributeValuesList.push(attr);
+    });
   }
 
   public hasAttributeFilters(): boolean {
@@ -280,24 +283,25 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
   }
 
   public clearLastAttributeFilter(): void {
-    let beforeLastAttributeFilterIndex = (this.hashAttributeFilterComponents.size - 1) - 1;
+    const beforeLastAttributeFilterIndex = (this.hashAttributeFilterComponents.size - 1) - 1;
 
-    if (beforeLastAttributeFilterIndex >= 0){
-      let comp = this.hashAttributeFilterComponents.get(beforeLastAttributeFilterIndex);
+    if (beforeLastAttributeFilterIndex >= 0) {
+      const comp = this.hashAttributeFilterComponents.get(beforeLastAttributeFilterIndex);
 
       comp.instance.selectedValueId = null;
     } else {
       this.selectedCategory = this.allCategoriesCat;
       this.clearAttributeFilterComponents();
     }
-    
-    this.startSearch()
+
+    this.startSearch();
   }
 
   private updatefilteringServiceAttributeFilters() {
-    let attrFilters: Array<SelectedAttributeFilter> =[];
+    const attrFilters: Array<SelectedAttributeFilter> = [];
     this.hashAttributeFilterComponents.forEach((comp, key) => {
-      let selectedAttribute: SelectedAttributeFilter = new SelectedAttributeFilter(key, comp.instance.selectedTypeId, comp.instance.selectedValueId, comp.instance.selectedTypeName);
+      const selectedAttribute: SelectedAttributeFilter =
+        new SelectedAttributeFilter(key, comp.instance.selectedTypeId, comp.instance.selectedValueId, comp.instance.selectedTypeName);
       attrFilters.push(selectedAttribute);
     });
 
@@ -308,7 +312,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
       compRef.instance.ngOnInit();
   }
 
-  private getAttributeTypeList(category: Category): Array<AttributeType> {
+  private getAttributeTypeList(category: ICategory): Array<AttributeType> {
       return this.hashAttributeFilterComponents.size > 0
               ? this.findAttributeFilterUsable(category)
               : category.AttributeTypes;

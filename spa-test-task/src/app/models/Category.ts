@@ -1,6 +1,6 @@
 import { AttributeType } from "./attribute-type";
 
-export interface Category {
+export interface ICategory {
     CategoryId: number;
     Name: string;
     DemeritStartingScore: number;

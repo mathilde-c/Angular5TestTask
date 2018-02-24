@@ -1,15 +1,15 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject } from "@angular/core/testing";
 
-import { HeaderInterceptorService } from './header-interceptor.service';
+import { HeaderInterceptor } from "./header-interceptor.service";
 
-describe('HeaderInterceptorService', () => {
+describe("HeaderInterceptorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HeaderInterceptorService]
+      providers: [HeaderInterceptor]
     });
   });
 
-  it('should be created', inject([HeaderInterceptorService], (service: HeaderInterceptorService) => {
+  it("should be created", inject([HeaderInterceptor], (service: HeaderInterceptor) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -1,15 +1,15 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject } from "@angular/core/testing";
 
-import { BaseUriInterceptorService } from './base-uri-interceptor.service';
+import { BaseUriInterceptor } from "./base-uri-interceptor.service";
 
-describe('BaseUriInterceptorService', () => {
+describe("BaseUriInterceptorService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BaseUriInterceptorService]
+      providers: [BaseUriInterceptor]
     });
   });
 
-  it('should be created', inject([BaseUriInterceptorService], (service: BaseUriInterceptorService) => {
+  it("should be created", inject([BaseUriInterceptor], (service: BaseUriInterceptor) => {
     expect(service).toBeTruthy();
   }));
 });
