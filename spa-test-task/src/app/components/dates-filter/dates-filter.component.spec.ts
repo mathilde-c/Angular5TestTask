@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { DatesFilterComponent } from './dates-filter.component';
+import { DatesFilterComponent } from "./dates-filter.component";
 
-describe('DatesFilterComponent', () => {
+describe("DatesFilterComponent", () => {
   let component: DatesFilterComponent;
   let fixture: ComponentFixture<DatesFilterComponent>;
 
@@ -19,7 +19,7 @@ describe('DatesFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

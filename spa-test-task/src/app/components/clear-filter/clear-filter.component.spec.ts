@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ClearFilterComponent } from './clear-filter.component';
+import { ClearFilterComponent } from "./clear-filter.component";
 
-describe('ClearFilterComponent', () => {
+describe("ClearFilterComponent", () => {
   let component: ClearFilterComponent;
   let fixture: ComponentFixture<ClearFilterComponent>;
 
@@ -19,7 +19,7 @@ describe('ClearFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

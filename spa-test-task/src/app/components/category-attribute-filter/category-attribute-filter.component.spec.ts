@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CategoryAttributeFilterComponent } from './category-attribute-filter.component';
+import { CategoryAttributeFilterComponent } from "./category-attribute-filter.component";
 
-describe('CategoryAttributeFilterComponent', () => {
+describe("CategoryAttributeFilterComponent", () => {
   let component: CategoryAttributeFilterComponent;
   let fixture: ComponentFixture<CategoryAttributeFilterComponent>;
 
@@ -19,7 +19,7 @@ describe('CategoryAttributeFilterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

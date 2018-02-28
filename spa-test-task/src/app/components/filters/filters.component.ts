@@ -22,7 +22,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.stopSearch.unsubscribe();
   }
 
-  public updateDateChange(updatedDateFilter: DatesFilter){
+  public updateDateChange(updatedDateFilter: DatesFilter) {
     this.stopSearch.next(true);
 
     this.filteringService.setDates(updatedDateFilter);
