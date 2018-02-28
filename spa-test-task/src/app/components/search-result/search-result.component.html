@@ -1,50 +1,46 @@
-
 <div class="container component">
 
-  <mat-table #table [dataSource]="dataSource">
+    <mat-table #table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="nameCat">
-      <mat-header-cell *matHeaderCellDef> 
-        <span> {{resultTypeTitle}} </span>
-      </mat-header-cell>
-      <mat-cell class="mat-cell-value" *matCellDef="let searchResult"> 
-        <span class="mat-cell-name-value"> 
-          {{searchResult.getName()}} 
-        </span> 
-      </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="nameCat">
+            <mat-header-cell *matHeaderCellDef>
+                <span> {{resultTypeTitle}} </span>
+            </mat-header-cell>
+            <mat-cell class="mat-cell-value" *matCellDef="let searchResult">
+                <span class="mat-cell-name-value">
+                    {{searchResult.getName()}}
+                </span>
+            </mat-cell>
+        </ng-container>
 
-    <ng-container matColumnDef="completedAudits">
-      <mat-header-cell *matHeaderCellDef class="align-right right-margin"> 
-        <span> Completed Audits </span>
-      </mat-header-cell>
-      <mat-cell class="mat-cell-value align-right right-margin" *matCellDef="let searchResult"> 
-        <span class="mat-cell-name-value"> 
-          {{searchResult.CompletedAuditCount}} 
-        </span> 
-      </mat-cell>
-    </ng-container>
+        <ng-container matColumnDef="completedAudits">
+            <mat-header-cell *matHeaderCellDef class="align-right right-margin">
+                <span> Completed Audits </span>
+            </mat-header-cell>
+            <mat-cell class="mat-cell-value align-right right-margin" *matCellDef="let searchResult">
+                <span class="mat-cell-name-value">
+                    {{searchResult.CompletedAuditCount}}
+                </span>
+            </mat-cell>
+        </ng-container>
 
 
-    <ng-container matColumnDef="graph">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let searchResult"> 
-            <span class="mat-cell-value graph-container" matTooltip="Passed: {{searchResult.PassedAuditCount}}&#13;Failed: {{searchResult.FailedAuditCount}}" [matTooltipClass]="'multiline-tooltip'" matTooltipPosition="right"> 
-              <div class="pass" [style.width.%]="getPassRate(searchResult)">
-              </div><!-- remove white space 
-              --><div class="fail" [style.width.%]="getFailRate(searchResult)"></div>
-            </span> 
-        </mat-cell>
-      </ng-container>
+        <ng-container matColumnDef="graph">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let searchResult">
+                <span class="mat-cell-value" matTooltip="Passed: {{searchResult.PassedAuditCount}}&#13;Failed: {{searchResult.FailedAuditCount}}"
+                    [matTooltipClass]="'multiline-tooltip'" matTooltipPosition="right">
+                    <app-contrast-bar-graph [pass]="searchResult.PassedAuditCount" [fail]="searchResult.FailedAuditCount"></app-contrast-bar-graph>
+                </span>
+            </mat-cell>
+        </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-  </mat-table>
+    </mat-table>
 
-  <mat-paginator #paginator
-                [pageSize]="5"
-                [pageSizeOptions]="[5, 20, 50, 100, 1000]">
-  </mat-paginator>
+    <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 20, 50, 100, 1000]">
+    </mat-paginator>
 
 </div>

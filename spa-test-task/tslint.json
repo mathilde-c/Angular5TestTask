@@ -109,6 +109,11 @@
         "variable-declaration": "nospace"
       }
     ],
+    "typedef": [
+      true,
+      "call-signature",
+      "property-declaration"
+    ],
     "unified-signatures": true,
     "variable-name": false,
     "whitespace": [

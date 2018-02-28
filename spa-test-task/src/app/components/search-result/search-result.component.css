@@ -2,23 +2,6 @@
     white-space: pre-line;
 }
 
-.graph-container{
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    height: 15px;
-}
-
-.pass {
-    background-color: #6fbb3f;
-}
-
-.fail {
-    background-color: #d1524b;
-    flex: 1 1 1;
-    stroke-width: 1px;
-}
-
 .align-right {
     display: flex;
     justify-content: flex-end;

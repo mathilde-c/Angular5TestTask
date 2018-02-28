@@ -25,46 +25,48 @@ import { HeaderInterceptor } from "./services/header-interceptor.service";
 import { BaseUriInterceptor } from "./services/base-uri-interceptor.service";
 
 import { AttributesFilterContainerDirective } from "./tools/attributes-filter-container.directive";
+import { ContrastBarGraphComponent } from "./components/contrast-bar-graph/contrast-bar-graph.component";
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DatesFilterComponent,
-    ClearFilterComponent,
-    CategoryAttributeFilterComponent,
-    CategoryFilterComponent,
-    AttributesFilterContainerDirective,
-    FiltersComponent,
-    SearchResultComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatDatepickerModule,
-    MatMomentDateModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTooltipModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    FormsModule,
-    HttpClientModule
-  ],
-  providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: BaseUriInterceptor, multi: true},
-    {provide: MAT_DATE_LOCALE, useValue: "fr-FR"},
-    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-    UserService,
-    CategoryService,
-    FilterService
-  ],
-  entryComponents: [CategoryAttributeFilterComponent],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        DatesFilterComponent,
+        ClearFilterComponent,
+        CategoryAttributeFilterComponent,
+        CategoryFilterComponent,
+        AttributesFilterContainerDirective,
+        FiltersComponent,
+        SearchResultComponent,
+        ContrastBarGraphComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatDatepickerModule,
+        MatMomentDateModule,
+        MatNativeDateModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        FormsModule,
+        HttpClientModule
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: BaseUriInterceptor, multi: true },
+        { provide: MAT_DATE_LOCALE, useValue: "fr-FR" },
+        { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
+        { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+        UserService,
+        CategoryService,
+        FilterService
+    ],
+    entryComponents: [CategoryAttributeFilterComponent],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
