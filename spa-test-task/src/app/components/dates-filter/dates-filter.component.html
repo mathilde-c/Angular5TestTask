@@ -1,26 +1,26 @@
 <div class="outer-container">
-<div class="single-date-picker-container">
-  <label for="picker-from">
-    From:
-  </label>
-  <div class="picker" name="picker-from">
-    <mat-form-field>
-      <input matInput [matDatepicker]="pickerFrom" [max]="to"[(ngModel)]="from">
-      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
-      <mat-datepicker #pickerFrom disabled="false"></mat-datepicker>
-    </mat-form-field>
-  </div>
-</div>
-<div class="single-date-picker-container">
-  <label for="picker-to">
-    To:
-  </label>
-  <div  class="picker" name="picker-to">
-    <mat-form-field>
-      <input matInput [matDatepicker]="pickerTo" [min]="from" [(ngModel)]="to">
-      <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
-      <mat-datepicker #pickerTo disabled="false"></mat-datepicker>
-    </mat-form-field>
-  </div>
-</div>
+    <div class="single-date-picker-container">
+        <label for="picker-from">
+            From:
+        </label>
+        <div class="picker" name="picker-from">
+            <mat-form-field>
+                <input matInput [matDatepicker]="pickerFrom" [max]="to" [(ngModel)]="from">
+                <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+                <mat-datepicker #pickerFrom disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="single-date-picker-container">
+        <label for="picker-to">
+            To:
+        </label>
+        <div class="picker" name="picker-to">
+            <mat-form-field>
+                <input matInput [matDatepicker]="pickerTo" [min]="from" [(ngModel)]="to">
+                <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                <mat-datepicker #pickerTo disabled="false"></mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
 </div>

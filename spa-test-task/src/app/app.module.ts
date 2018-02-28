@@ -49,10 +49,8 @@ import { ContrastBarGraphComponent } from "./components/contrast-bar-graph/contr
         MatFormFieldModule,
         MatInputModule,
         MatTooltipModule,
-        BrowserAnimationsModule,
         MatTableModule,
         MatPaginatorModule,
-        MatSortModule,
         FormsModule,
         HttpClientModule
     ],
