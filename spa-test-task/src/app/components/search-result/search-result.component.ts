@@ -14,7 +14,6 @@ export class SearchResultComponent implements OnInit, OnDestroy {
 
     @ViewChild(MatPaginator) public paginator: MatPaginator;
 
-    public resultList: Array<IItemCompletedAuditSearchResult> = [];
     public resultTypeTitle: string = "";
 
     public displayedColumns = ["nameCat", "completedAudits", "graph"];
@@ -29,8 +28,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
             .takeUntil(this.unsuscrieAll)
             .subscribe(
                 (resultArray: Array<IItemCompletedAuditSearchResult>) => {
-                    this.resultList = resultArray;
-                    this.dataSource = new MatTableDataSource<IItemCompletedAuditSearchResult>(this.resultList);
+                    this.dataSource = new MatTableDataSource<IItemCompletedAuditSearchResult>(resultArray);
                     this.dataSource.paginator = this.paginator;
                 }
             );

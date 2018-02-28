@@ -4,10 +4,10 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule } from "@angular/forms";
 import { MatTooltipModule, MatTableModule, MatPaginatorModule } from "@angular/material";
 import { MockComponent } from "ng2-mock-component/index";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 import { SearchResultComponent } from "./search-result.component";
 import { FilterService } from "../../services/filter.service";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { IItemCompletedAuditSearchResult } from "../../models/item-completed-audit-search-result";
 
 describe("SearchResultComponent", () => {
@@ -47,5 +47,31 @@ describe("SearchResultComponent", () => {
 
     it("should create", () => {
         expect(component).toBeTruthy();
+    });
+
+    it("should update its title when filterService title get updated", () => {
+        const service: FilterService = TestBed.get(FilterService);
+        service.upToDateSearchResultsTitle.next("new title");
+
+        expect(component.resultTypeTitle).toEqual("new title");
+    });
+
+    it("should update its result list when filterService results get retrived", () => {
+        const service: FilterService = TestBed.get(FilterService);
+        service.upToDateSearchResults.next([
+            {
+                FailedAuditCount: 3,
+                CompletedAuditCount: 6,
+                PassedAuditCount: 3,
+                // tslint:disable-next-line:typedef
+                getId: function () { return 1; },
+                // tslint:disable-next-line:typedef
+                getName: function () { return "name"; },
+                setId: null,
+                setName: null
+            }
+        ]);
+
+        expect(component.dataSource.data.length).toEqual(1);
     });
 });
