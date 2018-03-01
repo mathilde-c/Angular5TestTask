@@ -63,10 +63,8 @@ describe("SearchResultComponent", () => {
                 FailedAuditCount: 3,
                 CompletedAuditCount: 6,
                 PassedAuditCount: 3,
-                // tslint:disable-next-line:typedef
-                getId: function () { return 1; },
-                // tslint:disable-next-line:typedef
-                getName: function () { return "name"; },
+                getId: () => 1,
+                getName: () => "name",
                 setId: null,
                 setName: null
             }
