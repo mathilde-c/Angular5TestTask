@@ -20,6 +20,11 @@ describe("ClearFilterComponent", () => {
         fixture.detectChanges();
     });
 
+    afterEach(() => {
+        document.body.removeChild(fixture.debugElement.nativeElement);
+        fixture.destroy();
+    });
+
     it("should be created", () => {
         expect(component).toBeTruthy();
     });

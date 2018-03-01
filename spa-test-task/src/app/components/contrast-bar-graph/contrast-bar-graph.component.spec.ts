@@ -19,6 +19,11 @@ describe("ContrastBarGraphComponent", () => {
         fixture.detectChanges();
     });
 
+    afterEach(() => {
+        document.body.removeChild(fixture.debugElement.nativeElement);
+        fixture.destroy();
+    });
+
     it("should create", () => {
         expect(component).toBeTruthy();
     });

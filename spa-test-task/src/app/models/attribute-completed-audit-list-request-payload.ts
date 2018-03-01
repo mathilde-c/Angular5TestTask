@@ -4,7 +4,7 @@ import { CategoriesCompletedAuditListRequestPayload } from "./categories-complet
 export class AttributeCompletedAuditListRequestPayload extends CategoriesCompletedAuditListRequestPayload {
     public CategoryId: number;
     public GroupByAttributeTypeId: number;
-    public SelectedAttributes: ISelectedAttributePayload[];
+    public SelectedAttributes: Array<ISelectedAttributePayload>;
 
     public isEqual(other: AttributeCompletedAuditListRequestPayload): boolean {
         return super.isEqual(other)

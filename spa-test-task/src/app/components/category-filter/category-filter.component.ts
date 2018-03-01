@@ -62,7 +62,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
             .takeUntil(this.unsuscribeAll)
             .subscribe(
                 (resultArray: Array<ICategory>) => {
-                    const resultFromackEnd: ICategory[] = resultArray.map(c => { const cat: ICategory = c; return cat; });
+                    const resultFromackEnd: Array<ICategory> = resultArray.map(c => { const cat: ICategory = c; return cat; });
                     this.categoryList = this.categoryList.concat(resultFromackEnd);
                 }
             );
@@ -272,7 +272,7 @@ export class CategoryFilterComponent implements OnInit, OnDestroy {
         return latestAttributeFilter.instance.attributeValuesList.length > 1;
     }
     private updateLatestAttributeFilterValuesSetFromServer(latestAttributeFilter: ComponentRef<CategoryAttributeFilterComponent>
-        , results: IItemCompletedAuditSearchResult[]): void {
+        , results: Array<IItemCompletedAuditSearchResult>): void {
         results.forEach(result => {
             const attr: AttributeValue = new AttributeValue();
             attr.AttributeId = result.getId();

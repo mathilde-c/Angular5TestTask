@@ -12,17 +12,17 @@ import { CategoriesListRequestPayload } from "../models/categories-list-request-
 @Injectable()
 export class CategoryService {
 
-  constructor(private http: HttpClient,
-    private userService: UserService) { }
+    constructor(private http: HttpClient,
+        private userService: UserService) { }
 
     public getCategories(): Observable<Array<ICategory>> {
 
-      const body: CategoriesListRequestPayload = new CategoriesListRequestPayload();
-      body.UserId = this.userService.getUserId();
-      body.LoadAttributes = true;
-      body.CategoryId = 0;
+        const body: CategoriesListRequestPayload = new CategoriesListRequestPayload();
+        body.UserId = this.userService.getUserId();
+        body.LoadAttributes = true;
+        body.CategoryId = 0;
 
-      return this.http.post<ICategory[]>("Category", body);
+        return this.http.post<Array<ICategory>>("Category", body);
     }
 
 }

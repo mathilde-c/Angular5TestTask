@@ -4,12 +4,12 @@ import { IItemCompletedAuditSearchResult } from "./item-completed-audit-search-r
 
 
 export class AttributeCompletedAuditSearchResultList implements IItemCompletedAuditSearchResultList {
-    public Items: AttributeCompletedAuditSearchResult[];
+    public Items: Array<AttributeCompletedAuditSearchResult>;
     public TotalAuditCount: number;
     public TotalFailedAuditCount: number;
     public TotalPassedAuditCount: number;
 
-    public getItems(): AttributeCompletedAuditSearchResult[] {
+    public getItems(): Array<AttributeCompletedAuditSearchResult> {
         return this.Items;
     }
 }

@@ -7,7 +7,7 @@ export class CategoryCompletedAuditSearchResultList implements IItemCompletedAud
     public TotalFailedAuditCount: number;
     public TotalPassedAuditCount: number;
 
-    public getItems(): CategoryCompletedAuditSearchResult[] {
+    public getItems(): Array<CategoryCompletedAuditSearchResult> {
         return this.Items;
     }
 }

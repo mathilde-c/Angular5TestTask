@@ -41,6 +41,11 @@ describe("FiltersComponent", () => {
             .compileComponents();
     }));
 
+    afterEach(() => {
+        document.body.removeChild(fixture.debugElement.nativeElement);
+        fixture.destroy();
+    });
+
     it("should be created", () => {
         fixture = TestBed.createComponent(FiltersComponent);
         component = fixture.componentInstance;

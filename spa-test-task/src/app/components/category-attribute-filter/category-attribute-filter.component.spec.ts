@@ -32,6 +32,11 @@ describe("CategoryAttributeFilterComponent", () => {
         fixture.detectChanges();
     });
 
+    afterEach(() => {
+        document.body.removeChild(fixture.debugElement.nativeElement);
+        fixture.destroy();
+    });
+
     it("should create with empty inputs", () => {
         component.ngOnInit();
         expect(component).toBeTruthy();

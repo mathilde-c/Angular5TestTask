@@ -59,7 +59,7 @@ export class FilterService {
         return this.http.post<AttributeCompletedAuditSearchResultList>("CompletedAudits", body)
             .takeUntil(stopSearch)
             .map(list => {
-                const mappedArry: AttributeCompletedAuditSearchResult[] = list.Items.map(x => {
+                const mappedArry: Array<AttributeCompletedAuditSearchResult> = list.Items.map(x => {
                     const item: AttributeCompletedAuditSearchResult = new AttributeCompletedAuditSearchResult();
                     item.AttributeId = x.AttributeId;
                     item.AttributeName = x.AttributeName;
@@ -92,8 +92,8 @@ export class FilterService {
         return this.selectedAttributes[this.selectedAttributes.length - 1].TypeId;
     }
 
-    private getSelectAttributesFilterWithValueId(): ISelectedAttributePayload[] {
-        const attributes: ISelectedAttributePayload[] = this.selectedAttributes.map(attr => {
+    private getSelectAttributesFilterWithValueId(): Array<ISelectedAttributePayload> {
+        const attributes: Array<ISelectedAttributePayload> = this.selectedAttributes.map(attr => {
             const payload: ISelectedAttributePayload = {
                 TypeId: attr.TypeId,
                 AttributeId: attr.AttributeId
@@ -107,7 +107,7 @@ export class FilterService {
         return attributes;
     }
 
-    private hasLastAttributeFilterValue(attributes: ISelectedAttributePayload[]): any {
+    private hasLastAttributeFilterValue(attributes: Array<ISelectedAttributePayload>): any {
         return attributes[attributes.length - 1].AttributeId !== null
             && typeof (attributes[attributes.length - 1].AttributeId) !== "undefined";
     }
@@ -121,16 +121,17 @@ export class FilterService {
         return this.http.post<CategoryCompletedAuditSearchResultList>("CategoryCompletedAudits", body)
             .takeUntil(stopSearch)
             .map(list => {
-                const mappedArry: CategoryCompletedAuditSearchResult[] = list.Items.map(x => {
-                    const item: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
-                    item.CategoryId = x.CategoryId;
-                    item.CategoryName = x.CategoryName;
-                    item.CompletedAuditCount = x.CompletedAuditCount;
-                    item.FailedAuditCount = x.FailedAuditCount;
-                    item.PassedAuditCount = x.PassedAuditCount;
+                const mappedArry: Array<CategoryCompletedAuditSearchResult> =
+                    list.Items.map(x => {
+                        const item: CategoryCompletedAuditSearchResult = new CategoryCompletedAuditSearchResult();
+                        item.CategoryId = x.CategoryId;
+                        item.CategoryName = x.CategoryName;
+                        item.CompletedAuditCount = x.CompletedAuditCount;
+                        item.FailedAuditCount = x.FailedAuditCount;
+                        item.PassedAuditCount = x.PassedAuditCount;
 
-                    return item;
-                });
+                        return item;
+                    });
 
                 this.upToDateSearchResults.next(mappedArry);
                 this.upToDateSearchResultsTitle.next("Category");

@@ -67,6 +67,11 @@ describe("DatesFilterComponent", () => {
         expect(component.to.month()).toEqual(currentMonth);
     });
 
+    afterEach(() => {
+        document.body.removeChild(fixture.debugElement.nativeElement);
+        fixture.destroy();
+    });
+
     it("should emit datefilter when value is updated", (done) => {
         const newEndDate: Moment = moment(Date.now());
         newEndDate.month(10);
