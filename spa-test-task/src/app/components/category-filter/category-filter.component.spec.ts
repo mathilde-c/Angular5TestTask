@@ -76,17 +76,23 @@ describe("CategoryFilterComponent", () => {
         expect(categoryFilterElement.querySelector("app-clear-filter")).toBeTruthy();
     });
 
-    it("should contain <app-clear-filter> component, when some hasAttributeFilters are selected", () => {
-        const spy = spyOn(component, "hasAttributeFilters").and.returnValue(true);
-        fixture.detectChanges();
+    // select cat -> make 1 single filter
 
-        const categoryFilterElement = fixture.debugElement.nativeElement;
+    // click clear remove last filter
 
-        expect(categoryFilterElement.querySelector("app-clear-filter")).toBeTruthy();
-    });
+    // click clear when only 1 attr filter -> reset cat to all
+
     //#endregion
 
     //#region behavior
+
+    // search triggered with proper argument when
+    // - cat change
+    // - filter is created
+    // - attr value is picked
+    // - attr type is picked
+
+
     //#endregion
 
 });
