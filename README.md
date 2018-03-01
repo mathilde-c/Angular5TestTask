@@ -23,6 +23,7 @@ For instance, the data required to fill the available values for attribute filte
     * Unit testing: logic + UI.
     * Mocking components.
     * Stubing services - use of HttpClientTestingModule & HttpTestingController to fake the use of angular HttpClient.
+    * Use of jasmine spy.
     * End to end automated testing w/ protractor.
 * Angular spcifics:
   * Dynamic component generation (ChildView).
