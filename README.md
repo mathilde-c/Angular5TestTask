@@ -10,7 +10,7 @@ For instance, the data required to fill the available values for attribute filte
 ![alt text](https://github.com/CocotteDodue/Angular5TestTask/blob/01f893b8f6e066d189710bcb9ed5cfc505d524f6/contents/CompletedAuditsCategoryResults.PNG)
 
 
-### What aspects of front-end development are covered in this Angular5 project:
+### Aspects of front-end development covered in this Angular5 project:
 * Component based approach:
   * Components are identified and created first with a very limited, single-responsability scope.
   * Reusability maximization in mind.
