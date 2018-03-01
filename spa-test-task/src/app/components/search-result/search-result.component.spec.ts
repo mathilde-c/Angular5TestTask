@@ -9,17 +9,18 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { SearchResultComponent } from "./search-result.component";
 import { FilterService } from "../../services/filter.service";
 import { IItemCompletedAuditSearchResult } from "../../models/item-completed-audit-search-result";
+import { AngularWaitBarrier } from "blocking-proxy/built/lib/angular_wait_barrier";
 
 describe("SearchResultComponent", () => {
     let component: SearchResultComponent;
     let fixture: ComponentFixture<SearchResultComponent>;
 
+    const filterServiceStub: Partial<FilterService> = {
+        upToDateSearchResults: new BehaviorSubject<Array<IItemCompletedAuditSearchResult>>([]),
+        upToDateSearchResultsTitle: new BehaviorSubject<string>("")
+    };
+
     beforeEach(async(() => {
-        let filterServiceStub: Partial<FilterService>;
-        filterServiceStub = {
-            upToDateSearchResults: new BehaviorSubject<Array<IItemCompletedAuditSearchResult>>([]),
-            upToDateSearchResultsTitle: new BehaviorSubject<string>("")
-        };
 
         TestBed.configureTestingModule({
             declarations: [
@@ -45,7 +46,7 @@ describe("SearchResultComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should create", () => {
+    it("should be created", () => {
         expect(component).toBeTruthy();
     });
 
@@ -71,5 +72,25 @@ describe("SearchResultComponent", () => {
         ]);
 
         expect(component.dataSource.data.length).toEqual(1);
+    });
+
+    it("should constain <app-contrast-bar-graph> when its result list is not empty", () => {
+        const service: FilterService = TestBed.get(FilterService);
+        service.upToDateSearchResults.next([
+            {
+                FailedAuditCount: 3,
+                CompletedAuditCount: 6,
+                PassedAuditCount: 3,
+                getId: () => 1,
+                getName: () => "name",
+                setId: null,
+                setName: null
+            }
+        ]);
+
+        const searchResultsElement = fixture.debugElement.nativeElement;
+        fixture.detectChanges();
+
+        expect(searchResultsElement.querySelector("app-contrast-bar-graph")).toBeTruthy();
     });
 });

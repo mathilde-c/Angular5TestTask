@@ -52,6 +52,7 @@ describe("CategoryService", () => {
 
                     return req.url === "Category"
                         && req.method === "POST"
+
                         && expectedBody.isEqual(actualBody);
                 });
 

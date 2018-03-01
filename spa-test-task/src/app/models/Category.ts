@@ -5,5 +5,5 @@ export interface ICategory {
     Name: string;
     DemeritStartingScore: number;
     DefaultTypeId: number;
-    AttributeTypes: AttributeType[];
+    AttributeTypes: Array<AttributeType>;
 }

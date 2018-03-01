@@ -19,13 +19,13 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     public displayedColumns = ["nameCat", "completedAudits", "graph"];
     public dataSource: MatTableDataSource<IItemCompletedAuditSearchResult>;
 
-    private unsuscrieAll: Subject<boolean> = new Subject<boolean>();
+    private unsuscribeAll: Subject<boolean> = new Subject<boolean>();
 
     constructor(private filterService: FilterService) { }
 
     public ngOnInit(): void {
         this.filterService.upToDateSearchResults
-            .takeUntil(this.unsuscrieAll)
+            .takeUntil(this.unsuscribeAll)
             .subscribe(
                 (resultArray: Array<IItemCompletedAuditSearchResult>) => {
                     this.dataSource = new MatTableDataSource<IItemCompletedAuditSearchResult>(resultArray);
@@ -34,7 +34,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
             );
 
         this.filterService.upToDateSearchResultsTitle
-            .takeUntil(this.unsuscrieAll)
+            .takeUntil(this.unsuscribeAll)
             .subscribe(
                 (title) => {
                     this.resultTypeTitle = title;
@@ -43,7 +43,7 @@ export class SearchResultComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.unsuscrieAll.next(true);
-        this.unsuscrieAll.unsubscribe();
+        this.unsuscribeAll.next(true);
+        this.unsuscribeAll.unsubscribe();
     }
 }
