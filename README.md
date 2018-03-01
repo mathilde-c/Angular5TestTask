@@ -18,8 +18,12 @@ For instance, the data required to fill the available values for attribute filte
 * Clean code:
   * Simplistic approach, keeping html, css, and ts files as consive, human readble.
   * Avoid redundancy.
-  * use explicit naming & use of unique naming pattern.
-  * Tests via spec files (in progress)
+  * use explicit naming & unique naming pattern.
+  * Tests via spec files (in progress):
+    * Unit testing: logic + UI.
+    * Mocking components.
+    * Stubing services - use of HttpClientTestingModule & HttpTestingController to fake the use of angular HttpClient.
+    * End to end automated testing w/ protractor.
 * Angular spcifics:
   * Dynamic component generation (ChildView).
   * HttpClient, & httpInterceptor.
