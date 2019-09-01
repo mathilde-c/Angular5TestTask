@@ -20,7 +20,7 @@
     "@angular/http": "^5.2.0",
     "@angular/material": "^5.2.0",
     "@angular/material-moment-adapter": "^5.2.0",
-    "moment": "2.18.1",
+    "moment": "2.19.3",
     "@angular/cdk": "^5.2.0",
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
